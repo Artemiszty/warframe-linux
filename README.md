@@ -1,23 +1,22 @@
 ## Installation Instructions
 
-REQUIREMENTS:
-1. Please be sure to install wine system dependencies. This can usually be achieved by installing wine on your system through your package manager.  Additional help can be found here:
-[How to get out of Wine Dependency Hell](https://www.gloriouseggroll.tv/how-to-get-out-of-wine-dependency-hell/)  
-2. Please make sure your system has the wget and curl packages installed for your distro.  
-3. Please make sure your system has wine-staging and winetricks installed for your distro.  
+REQUIREMENTS:  
 
-You will also need to install curl on your system for the updater to work.
+1. Install wine-staging and wine dependencies (follow guide here for your distro):
+https://www.gloriouseggroll.tv/how-to-get-out-of-wine-dependency-hell/[How to get out of Wine Dependency Hell](https://www.gloriouseggroll.tv/how-to-get-out-of-wine-dependency-hell/)  
+
+2. Install some tools you'll need for the script: winetricks, tar, git, curl, and wget packages for your distro.  
 
 Option A: Download Lutris. If you have lutris already, please make sure it is updated to version 0.4.14 or higher, as older versions had problems running batch scripts.  Next, run my Lutris install script for warframe:  
-[Lutris 0.4.14](https://lutris.net/downloads/)  
+[Lutris 0.4.18](https://lutris.net/downloads/)  
 [Warframe Install Script for Lutris](https://lutris.net/games/warframe/)  
+Enable DXVK in the configuration options for the game in lutris, then run it from lutris.
 
 Option B: Without Lutris:  
-1. Install wine-staging 3.3 (or higher) for your linux distribution.  
 
-2. Download a copy of my warframe wine wrapper repo and extract it somewhere: [warframe-linux-master](https://github.com/GloriousEggroll/warframe-linux/archive/master.zip)  
+1. Download a copy of my warframe wine wrapper repo and extract it somewhere: [warframe-linux-master](https://github.com/GloriousEggroll/warframe-linux/archive/master.zip)  
 
-3. Open the extracted folder in a terminal and:  
+2. Open the extracted folder in a terminal and:  
 
 ```shell
   chmod a+x install.sh
@@ -30,7 +29,7 @@ Option B: Without Lutris:
 An optional parameter may be passed to specify the target installation
 directory. Run `./install.sh --help` to see all available options.
 
-4. Launch the game via any of the following methods:  
+3. Launch the game via any of the following methods:  
 
 ```
   Applications>Games>Warframe
@@ -38,7 +37,7 @@ directory. Run `./install.sh --help` to see all available options.
   type "warframe" in a terminal
 ```
 
-5. The launcher will open and run in a terminal. It will then launch two "black boxes", one after another. This is Warframe.exe double checking for missed updates, and then optimizing the game cache. Once these launch they will close by themselves, and the game will launch, then the termnal window will close.
+NOTE: The launcher will open and run in a terminal. It will then launch two "black boxes", one after another. This is Warframe.exe double checking for missed updates, and then optimizing the game cache. Once these launch they will close by themselves, and the game will launch.
 
 ## Uninstallation/Removal Instructions
 This applies to non-lutris only: 
