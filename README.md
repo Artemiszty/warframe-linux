@@ -6,7 +6,7 @@ REQUIREMENTS:
 [How to get out of Wine Dependency Hell](https://www.gloriouseggroll.tv/how-to-get-out-of-wine-dependency-hell/)  
 
 2. Install some tools you'll need for the script. You'll have to search for these packages yourself as I do not have/know the package names for every distro:  
-winetricks, tar/untar, lzma/unlzma, curl, wget, md5sum
+winetricks, tar, lzma/unlzma, curl, wget, md5sum
 
 Option A: Download Lutris:  
 
