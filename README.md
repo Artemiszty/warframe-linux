@@ -35,8 +35,10 @@ directory. Run `./install.sh --help` to see all available options.
 3. Launch the game via any of the following methods:  
 
 ```
-  Applications>Games>Warframe
-  Warframe desktop shortcut
+  Applications>Games>Warframe  
+  or  
+  Warframe desktop shortcut  
+  or  
   type "warframe" in a terminal
 ```
 
