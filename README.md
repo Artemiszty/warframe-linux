@@ -7,7 +7,9 @@ https://www.gloriouseggroll.tv/how-to-get-out-of-wine-dependency-hell/[How to ge
 
 2. Install some tools you'll need for the script: winetricks, tar, git, curl, and wget packages for your distro.  
 
-Option A: Download Lutris. If you have lutris already, please make sure it is updated to version 0.4.14 or higher, as older versions had problems running batch scripts.  Next, run my Lutris install script for warframe:  
+Option A: Download Lutris:  
+
+If you have lutris already, please make sure it is updated to version 0.4.14 or higher, as older versions had problems running batch scripts.  Next, run my Lutris install script for warframe:  
 [Lutris 0.4.18](https://lutris.net/downloads/)  
 [Warframe Install Script for Lutris](https://lutris.net/games/warframe/)  
 Enable DXVK in the configuration options for the game in lutris, then run it from lutris.
