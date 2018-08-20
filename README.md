@@ -3,7 +3,7 @@
 REQUIREMENTS:  
 
 1. Install wine-staging and wine dependencies (follow guide here for your distro):  
-https://www.gloriouseggroll.tv/how-to-get-out-of-wine-dependency-hell/[How to get out of Wine Dependency Hell](https://www.gloriouseggroll.tv/how-to-get-out-of-wine-dependency-hell/)  
+[How to get out of Wine Dependency Hell](https://www.gloriouseggroll.tv/how-to-get-out-of-wine-dependency-hell/)  
 
 2. Install some tools you'll need for the script: winetricks, tar, git, curl, and wget packages for your distro.  
 
