@@ -47,24 +47,3 @@ This applies to non-lutris only:
   ./uninstall.sh
 ```
 
-## Technical notes:  
-Known issues:
-Local Reflections cause graphical glitches. Motion blurring is broken, Depth of Field causes stuttering and does not work correctly. Leave them off.  
-
-These settings are disabled in the launcher to prevent crashing and for better performance:  
-
-```
-  64-bit mode
-```
-
-These settings are disabled by default to reduce gameplay stuttering and/or graphical glitches:  
-
-```
-  Vsync: OFF
-  Local Reflections: OFF
-  Local Reflection Blur: OFF
-  Motion Blurring: OFF
-  Depth of Field: OFF
-```
-
-You can set all other graphics settings as you wish.
