@@ -81,7 +81,26 @@ echo "*************************************************"
 wget https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe
 $WINE directx_Jun2010_redist.exe /Q /T:C:\dx9
 $WINE dx9/dx9/DXSETUP.EXE /silent
-rm -R dx9
+rm -R dx9 directx_Jun2010_redist.exe
+
+echo "*************************************************"
+echo "Installing DXVK."
+echo "*************************************************"
+
+get_latest_release() {
+  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
+    grep '"tag_name":' | 
+    sed -E 's/.*"v([^"]+)".*/\1/'  
+    
+}
+
+DXVKVERSION=$(get_latest_release "doitsujin/dxvk")
+wget https://github.com/doitsujin/dxvk/releases/download/v$DXVKVERSION/dxvk-$DXVKVERSION.tar.gz
+tar -xvzf dxvk-$DXVKVERSION.tar.gz
+cd dxvk-$DXVKVERSION
+winetricks --force setup_dxvk.verb
+cd ..
+rm -R dxvk-$DXVKVERSION dxvk-$DXVKVERSION.tar.gz
 
 
 echo "*************************************************"
