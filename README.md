@@ -22,7 +22,7 @@ cd ..
 rm -R dxvk-0.70 dxvk-0.70.tar.gz
 ```
 
-After that finishes and after the game is installed in steam, browse the steam files and open the Tools folder. Make a backup of Launcher.exe, then copy my Launcher.exe and Launcher.sh into the Tools folder.  
+5. After that finishes and after the game is installed in steam, browse the steam files and open the Tools folder. Make a backup of Launcher.exe, then copy my Launcher.exe and Launcher.sh into the Tools folder.  
 
 From here run the game in steam, it should open a terminal, then two black boxes will run, then the game will launch with full Tennogen access.  
 
