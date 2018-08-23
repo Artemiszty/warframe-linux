@@ -1,5 +1,5 @@
 #!/bin/bash
-# exit on first error
+# exit on first error, comment out for debugging
 #set -e
 
 # If we are not already running in a terminal
@@ -15,7 +15,7 @@ if [ ! -t 1 ]; then
 	# Couldn't find a terminal to run in. Just continue.
 fi
 
-# create folders if they don't exist
+# create folders if they don't exist - comment out for steam
 #if [ ! -d "$WINEPREFIX/drive_c/Program Files/Warframe/Downloaded" ]; then
   #mkdir -p "$WINEPREFIX/drive_c/Program Files/Warframe/Downloaded/Public"
 #fi
@@ -115,25 +115,6 @@ Windows Registry Editor Version 5.00
 EOF
 
 "$WINE" regedit /S wf.reg
-
-echo "*************************************************"
-echo "Installing DXVK."
-echo "*************************************************"
-
-get_latest_release() {
-  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
-    grep '"tag_name":' | 
-    sed -E 's/.*"v([^"]+)".*/\1/'  
-    
-}
-
-DXVKVERSION=$(get_latest_release "doitsujin/dxvk")
-wget https://github.com/doitsujin/dxvk/releases/download/v$DXVKVERSION/dxvk-$DXVKVERSION.tar.gz
-tar -xvzf dxvk-$DXVKVERSION.tar.gz
-cd dxvk-$DXVKVERSION
-winetricks --force setup_dxvk.verb
-cd ..
-rm -R dxvk-$DXVKVERSION dxvk-$DXVKVERSION.tar.gz
 
 fi
 
