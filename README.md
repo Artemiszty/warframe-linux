@@ -8,46 +8,22 @@ REQUIREMENTS:
 2. Install some tools you'll need for the script. You'll have to search for these packages yourself as I do not have/know the package names for every distro:  
 winetricks, tar, lzma/unlzma, curl, wget, md5sum
 
-Option A: Download Lutris:  
-
-If you have lutris already, please make sure it is updated to version 0.4.14 or higher, as older versions had problems running batch scripts.  Next, run my Lutris install script for warframe:  
-[Lutris 0.4.18](https://lutris.net/downloads/)  
-[Warframe Install Script for Lutris](https://lutris.net/games/warframe/)  
-Enable DXVK in the configuration options for the game in lutris, then run it from lutris.
-
-Option B: Without Lutris:  
-
-1. Download a copy of my warframe wine wrapper repo and extract it somewhere: [warframe-linux-master](https://github.com/GloriousEggroll/warframe-linux/archive/master.zip)  
-
-2. Open the extracted folder in a terminal and:  
-
-```shell
-  chmod a+x install.sh
+3. Install the game in steam via lutris or some easy to use wine bottle manager. I will create a prefix install script eventually, but for now here are the winetricks you need:  
+```
+WINEARCH=win64 WINEPREFIX=/path/to/steam/game/prefix winetricks -q vcrun2015 vcrun2013 devenum xact xinput quartz win7  
+```
+4. Install DXVK:
+```
+wget https://github.com/doitsujin/dxvk/releases/download/v0.70/dxvk-0.70.tar.gz
+tar -xvzf dxvk-0.70.tar.gz
+cd dxvk-0.70
+WINEARCH=win64 WINEPREFIX=/path/to/steam/game/prefix winetricks --force setup_dxvk.verb
+cd ..
+rm -R dxvk-0.70 dxvk-0.70.tar.gz
 ```
 
-```shell
-  ./install.sh
-```
+After that finishes and after the game is installed in steam, browse the steam files and open the Tools folder. Make a backup of Launcher.exe, then copy my Launcher.exe and Launcher.sh into the Tools folder.  
 
-An optional parameter may be passed to specify the target installation
-directory. Run `./install.sh --help` to see all available options.
+From here run the game in steam, it should open a terminal, then two black boxes will run, then the game will launch with full Tennogen access.  
 
-3. Launch the game via any of the following methods:  
-
-```
-  Applications>Games>Warframe  
-  or  
-  Warframe desktop shortcut  
-  or  
-  type "warframe" in a terminal
-```
-
-NOTE: The launcher will open and run in a terminal. It will then launch two "black boxes", one after another. This is Warframe.exe double checking for missed updates, and then optimizing the game cache. Once these launch they will close by themselves, and the game will launch.
-
-## Uninstallation/Removal Instructions
-This applies to non-lutris only: 
-
-```shell
-  ./uninstall.sh
-```
-
+For the curious - you can open my Launcher.exe in a text editor. it's a wrapper for Launcher.sh which allows arguments to be passed through it. You can use the same arguments as my standalone script.

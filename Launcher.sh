@@ -1,6 +1,6 @@
 #!/bin/bash
 # exit on first error
-set -e
+#set -e
 
 # If we are not already running in a terminal
 if [ ! -t 1 ]; then
@@ -16,23 +16,21 @@ if [ ! -t 1 ]; then
 fi
 
 # create folders if they don't exist
-if [ ! -d "$WINEPREFIX/drive_c/Program Files/Warframe/Downloaded" ]; then
-  mkdir -p "$WINEPREFIX/drive_c/Program Files/Warframe/Downloaded/Public"
-fi
+#if [ ! -d "$WINEPREFIX/drive_c/Program Files/Warframe/Downloaded" ]; then
+  #mkdir -p "$WINEPREFIX/drive_c/Program Files/Warframe/Downloaded/Public"
+#fi
 
-EXEPREFIX="$WINEPREFIX/drive_c/Program Files/Warframe/Downloaded/Public"
-
+EXEPREFIX="../../Warframe/"
 WINE=${WINE:-wine64}
 export WINEARCH=${WINEARCH:-win64}
 export WINEDEBUG=${WINEDEBUG:--all}
 export WINEPREFIX
-
-export __PBA_GEO_HEAP=2048
 export PULSE_LATENCY_MSEC=60
 export __GL_THREADED_OPTIMIZATIONS=1
 export MESA_GLTHREAD=TRUE
 
-WARFRAME_EXE="Downloaded/Public/Warframe.exe"
+
+WARFRAME_EXE="../Warframe.x64.exe"
 
 #this is temporary until we can find out why both exes are getting corrupted and not launchable after closing
 find "$EXEPREFIX" -name 'Warframe.*' -exec rm {} \;
@@ -41,6 +39,7 @@ function print_synopsis {
 	echo "$0 [options]"
 	echo ""
 	echo "options:"
+	echo "    --firstrun       prepare prefix for first run of game"
 	echo "    --no-update         explicitly disable updating of warframe."
 	echo "    --no-cache          explicitly disable cache optimization of warframe cache files."
 	echo "    --no-game         explicitly disable launching of warframe."
@@ -55,6 +54,7 @@ do_update=true
 do_cache=true
 start_game=true
 verbose=false
+firstrun=false
 
 #############################################################
 # parse command line arguments
@@ -63,6 +63,9 @@ verbose=false
 while [[ $# -gt 0 ]]; do
 	key="$1"
 	case "$key" in
+		--firstrun)
+		firstrun=true
+		;;
 		--no-update)
 		do_update=false
 		;;
@@ -92,6 +95,46 @@ done
 # show all executed commands
 if [ "$verbose" = true ] ; then
 	set -x
+fi
+
+if [ "$firstrun" = true ] ; then
+
+cat > wf.reg <<EOF
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Wine\Direct3D]
+"OffscreenRenderingMode"="fbo"
+"RenderTargetLockMode"="readtex"
+
+[HKEY_CURRENT_USER\Software\Wine\DllOverrides]
+"rasapi32"="native"
+"d3dcompiler_43"="native,builtin"
+"d3dcompiler_47"="native,builtin"
+"xaudio2_7"="native,builtin"
+
+EOF
+
+"$WINE" regedit /S wf.reg
+
+echo "*************************************************"
+echo "Installing DXVK."
+echo "*************************************************"
+
+get_latest_release() {
+  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
+    grep '"tag_name":' | 
+    sed -E 's/.*"v([^"]+)".*/\1/'  
+    
+}
+
+DXVKVERSION=$(get_latest_release "doitsujin/dxvk")
+wget https://github.com/doitsujin/dxvk/releases/download/v$DXVKVERSION/dxvk-$DXVKVERSION.tar.gz
+tar -xvzf dxvk-$DXVKVERSION.tar.gz
+cd dxvk-$DXVKVERSION
+winetricks --force setup_dxvk.verb
+cd ..
+rm -R dxvk-$DXVKVERSION dxvk-$DXVKVERSION.tar.gz
+
 fi
 
 
@@ -213,8 +256,16 @@ if [ "$do_update" = true ] ; then
 			#download file and replace old file
 			#keep wget as a backup in case curl fails
 			#wget -x -O "$EXEPREFIX$line" http://content.warframe.com$line
-			mkdir -p "$(dirname "$LOCAL_PATH")"
-			curl -A Mozilla/5.0 $DOWNLOAD_URL | unlzma - > "$LOCAL_PATH"
+            if [ ! -d "$(dirname "$LOCAL_PATH")" ]; then
+                if [[ "$LOCAL_PATH" == *"Launcher"* ]]; then
+                    echo "$(dirname "$LOCAL_PATH")"
+                    echo "Skipping launcher update"
+                fi
+            else
+                mkdir -p "$(dirname "$LOCAL_PATH")"
+                echo "$LOCAL_PATH"
+                curl -A Mozilla/5.0 $DOWNLOAD_URL | unlzma - > "$LOCAL_PATH"
+            fi
 		fi
 
 		#update local index
@@ -232,7 +283,7 @@ if [ "$do_update" = true ] ; then
 	rm index.*
 
 	# run warframe internal updater
-	$WINE cmd /C start /b /wait "" "$WARFRAME_EXE" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/ContentUpdate
+	"$WINE" cmd /C start /b /wait "" $WARFRAME_EXE -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/ContentUpdate -registry:Steam
 fi
 
 
@@ -243,7 +294,7 @@ if [ "$do_cache" = true ] ; then
 	echo "*********************"
 	echo "Optimizing Cache."
 	echo "*********************"
-	$WINE cmd /C start /b /wait "" "$WARFRAME_EXE"  -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt
+	"$WINE" cmd /C start /b /wait "" $WARFRAME_EXE  -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt -registry:Steam
 fi
 
 
@@ -256,5 +307,6 @@ if [ "$start_game" = true ] ; then
 	echo "Launching Warframe."
 	echo "*********************"
 
-	$WINE cmd /C start /wait "" "$WARFRAME_EXE" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0
+	"$WINE" cmd /C start /wait "" $WARFRAME_EXE -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam
 fi
+
