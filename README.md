@@ -6,7 +6,7 @@ Currently the game does not launch in Steam Play/Proton because it thinks it's o
 REQUIREMENTS:  
 
 1. Install some tools you'll need for the script. You'll have to search for these packages yourself as I do not have/know the package names for every distro:  
-winetricks, tar, lzma/unlzma, curl, wget, md5sum
+winetricks, 7z, xz-utils, curl, md5sum
 
 2. Install the game in steam via lutris or some easy to use wine bottle manager. 
 
