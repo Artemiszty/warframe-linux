@@ -15,31 +15,26 @@ if [ ! -t 1 ]; then
 	# Couldn't find a terminal to run in. Just continue.
 fi
 
+
 # create folders if they don't exist - comment out for steam
 #if [ ! -d "$WINEPREFIX/drive_c/Program Files/Warframe/Downloaded" ]; then
   #mkdir -p "$WINEPREFIX/drive_c/Program Files/Warframe/Downloaded/Public"
 #fi
 
-EXEPREFIX="../../Warframe/"
-WINE=${WINE:-wine64}
-export WINEARCH=${WINEARCH:-win64}
-export WINEDEBUG=${WINEDEBUG:--all}
-export WINEPREFIX
+EXEPREFIX="${PWD:0:-14}"Warframe/
 export PULSE_LATENCY_MSEC=60
+export STEAM_COMPAT_DATA_PATH=$WINEPREFIX
+export PROTON=$(echo "${PWD:0:-14}"Proton*/proton)
 export __GL_THREADED_OPTIMIZATIONS=1
 export MESA_GLTHREAD=TRUE
 
+WARFRAME_EXE="Warframe.x64.exe"
 
-WARFRAME_EXE="../Warframe.x64.exe"
-
-#this is temporary until we can find out why both exes are getting corrupted and not launchable after closing
-find "$EXEPREFIX" -name 'Warframe.*' -exec rm {} \;
 
 function print_synopsis {
 	echo "$0 [options]"
 	echo ""
 	echo "options:"
-	echo "    --firstrun       prepare prefix for first run of game"
 	echo "    --no-update         explicitly disable updating of warframe."
 	echo "    --no-cache          explicitly disable cache optimization of warframe cache files."
 	echo "    --no-game         explicitly disable launching of warframe."
@@ -54,8 +49,6 @@ do_update=true
 do_cache=true
 start_game=true
 verbose=false
-firstrun=false
-
 #############################################################
 # parse command line arguments
 #############################################################
@@ -63,9 +56,6 @@ firstrun=false
 while [[ $# -gt 0 ]]; do
 	key="$1"
 	case "$key" in
-		--firstrun)
-		firstrun=true
-		;;
 		--no-update)
 		do_update=false
 		;;
@@ -97,32 +87,13 @@ if [ "$verbose" = true ] ; then
 	set -x
 fi
 
-if [ "$firstrun" = true ] ; then
-
-cat > wf.reg <<EOF
-Windows Registry Editor Version 5.00
-
-[HKEY_CURRENT_USER\Software\Wine\Direct3D]
-"OffscreenRenderingMode"="fbo"
-"RenderTargetLockMode"="readtex"
-
-[HKEY_CURRENT_USER\Software\Wine\DllOverrides]
-"rasapi32"="native"
-"d3dcompiler_43"="native,builtin"
-"d3dcompiler_47"="native,builtin"
-"xaudio2_7"="native,builtin"
-
-EOF
-
-"$WINE" regedit /S wf.reg
-
-fi
-
-
 #############################################################
 # update game files
 #############################################################
 if [ "$do_update" = true ] ; then
+    #this is temporary until we can find out why both exes are getting corrupted and not launchable after closing
+    find "$EXEPREFIX" -name 'Warframe.*' -exec rm {} \;
+
 	find "$EXEPREFIX" -name '*.lzma' -exec rm {} \;
 
 	#keep wget as a backup in case curl fails
@@ -232,8 +203,6 @@ if [ "$do_update" = true ] ; then
 		#do download
 		if [ "$do_update" = true ]; then
 			#show progress percentage for each downloading file
-			echo "Total update progress: $PERCENT% Downloading: ${RAW_FILENAME:0:-38}"
-
 			#download file and replace old file
 			#keep wget as a backup in case curl fails
 			#wget -x -O "$EXEPREFIX$line" http://content.warframe.com$line
@@ -243,6 +212,7 @@ if [ "$do_update" = true ] ; then
                     echo "Skipping launcher update"
                 fi
             else
+            	echo "Total update progress: $PERCENT% Downloading: ${RAW_FILENAME:0:-38}"
                 mkdir -p "$(dirname "$LOCAL_PATH")"
                 echo "$LOCAL_PATH"
                 curl -A Mozilla/5.0 $DOWNLOAD_URL | unlzma - > "$LOCAL_PATH"
@@ -264,9 +234,12 @@ if [ "$do_update" = true ] ; then
 	rm index.*
 
 	# run warframe internal updater
-	"$WINE" cmd /C start /b /wait "" $WARFRAME_EXE -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/ContentUpdate -registry:Steam
+	cp Launcher.exe Launcher-lutris.exe
+	"$PROTON" run $EXEPREFIX$WARFRAME_EXE -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/ContentUpdate -registry:Steam
+	rm Launcher.exe.bak
+	mv Launcher.exe Launcher.exe.bak
+	mv Launcher-lutris.exe Launcher.exe
 fi
-
 
 #############################################################
 # cache optimization
@@ -275,7 +248,7 @@ if [ "$do_cache" = true ] ; then
 	echo "*********************"
 	echo "Optimizing Cache."
 	echo "*********************"
-	"$WINE" cmd /C start /b /wait "" $WARFRAME_EXE  -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt -registry:Steam
+	"$PROTON" run $EXEPREFIX$WARFRAME_EXE -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt -registry:Steam
 fi
 
 
@@ -287,7 +260,8 @@ if [ "$start_game" = true ] ; then
 	echo "*********************"
 	echo "Launching Warframe."
 	echo "*********************"
+	"$PROTON" run $EXEPREFIX$WARFRAME_EXE -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam
 
-	"$WINE" cmd /C start /wait "" $WARFRAME_EXE -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam
 fi
+read
 
