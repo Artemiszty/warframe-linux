@@ -21,10 +21,15 @@ fi
   #mkdir -p "$WINEPREFIX/drive_c/Program Files/Warframe/Downloaded/Public"
 #fi
 
-EXEPREFIX="${PWD:0:-14}"Warframe/
 export PULSE_LATENCY_MSEC=60
+export WINEPREFIX
 export STEAM_COMPAT_DATA_PATH=$WINEPREFIX
-export PROTON=$(echo "${PWD:0:-14}"Proton*/proton)
+export EXEPREFIX=$(echo "${PWD:0:-14}"Warframe/)
+export PROTONDIR=$(echo "${PWD:0:-14}"Proton*/)
+export PROTON=$(echo "$PROTONDIR"proton)
+export WINE32=$(echo "$PROTONDIR"/dist/bin/wine)
+export WINE64=$(echo "$PROTONDIR"/dist/bin/wine64)
+
 export __GL_THREADED_OPTIMIZATIONS=1
 export MESA_GLTHREAD=TRUE
 
@@ -35,9 +40,10 @@ function print_synopsis {
 	echo "$0 [options]"
 	echo ""
 	echo "options:"
+	echo "    --firstrun          installs the necessary files to run the game."
 	echo "    --no-update         explicitly disable updating of warframe."
 	echo "    --no-cache          explicitly disable cache optimization of warframe cache files."
-	echo "    --no-game         explicitly disable launching of warframe."
+	echo "    --no-game           explicitly disable launching of warframe."
 	echo "    -v, --verbose       print each executed command"
 	echo "    -h, --help          print this help message and quit"
 }
@@ -49,6 +55,7 @@ do_update=true
 do_cache=true
 start_game=true
 verbose=false
+firstrun=false
 #############################################################
 # parse command line arguments
 #############################################################
@@ -56,6 +63,9 @@ verbose=false
 while [[ $# -gt 0 ]]; do
 	key="$1"
 	case "$key" in
+		--firstrun)
+		firstrun=true
+		;;
 		--no-update)
 		do_update=false
 		;;
@@ -87,12 +97,34 @@ if [ "$verbose" = true ] ; then
 	set -x
 fi
 
+if [ "$firstrun" = true ] ; then
+
+echo "********************************"
+echo "Preparing prefix for first run."
+echo "********************************"
+
+echo "Downloading DirectX..."
+
+curl -A Mozilla/5.0 https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe -o directx_Jun2010_redist.exe
+
+echo "Extracting DirectX install files, please wait...this will take a minute."
+7z -odx9 e "$EXEPREFIX"Tools/directx_Jun2010_redist.exe -y &> /dev/null
+
+echo "Installing DirectX..."
+"$WINE64" "$EXEPREFIX"Tools/dx9/DXSETUP.EXE /silent
+rm -R dx9 directx_Jun2010_redist.exe
+	
+echo "Finished prefix preparation!"
+
+fi
+
+
 #############################################################
 # update game files
 #############################################################
 if [ "$do_update" = true ] ; then
-    #this is temporary until we can find out why both exes are getting corrupted and not launchable after closing
-    find "$EXEPREFIX" -name 'Warframe.*' -exec rm {} \;
+    #old bug fix, leave this commented out for now
+    #find "$EXEPREFIX" -name 'Warframe.*' -exec rm {} \;
 
 	find "$EXEPREFIX" -name '*.lzma' -exec rm {} \;
 
@@ -263,4 +295,4 @@ if [ "$start_game" = true ] ; then
 	"$PROTON" run $EXEPREFIX$WARFRAME_EXE -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam
 
 fi
-
+#read
