@@ -1,6 +1,5 @@
 STATUS:
-Currently the game does not launch in Steam Play/Proton because it thinks it's offline and is unable to download the Cache Manifest.   
-
+Currently the game does not launch in Steam Play/Proton because it thinks it's offline and is unable to download the Cache Manifest. My launcher is able to update and launch the game as needed, just waiting on this to be fixed in proton.  
 
 ## Installation Instructions
 
