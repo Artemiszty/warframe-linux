@@ -1,3 +1,5 @@
 #!/bin/bash
 
-./Launcher.sh $3 &>> log.txt
+
+./Launcher.sh "${@:3}"
+

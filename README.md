@@ -6,13 +6,20 @@ REQUIREMENTS:
 [How to get out of Wine Dependency Hell](https://www.gloriouseggroll.tv/how-to-get-out-of-wine-dependency-hell/)  
 
 2. Install some tools you'll need for the script. You'll have to search for these packages yourself as I do not have/know the package names for every distro:  
-winetricks, tar, lzma/unlzma, curl, wget, md5sum
+winetricks,lzma/unlzma, curl, md5sum
 
-3. Install the game in steam via lutris or some easy to use wine bottle manager. I will create a prefix install script eventually, but for now here are the winetricks you need:  
-```
-WINEARCH=win64 WINEPREFIX=/path/to/steam/game/prefix winetricks -q vcrun2015 vcrun2013 devenum xact xinput quartz win7  
-```
-4. Install DXVK:
+3. Install steam via wine into a 64 bit wine prefix. This can be done in Lutris or PlayOnLinux. After that, install the game.
+
+4. Browse to the steamapps/common/Warframe/Tools folder. Make a backup of Launcher.exe, then copy my Launcher.exe and Launcher.sh into the Tools folder.
+
+5. Before running the game for the first time, add the launch option --firstrun to Warframe in steam, then press Play.
+
+From here run the game in steam, it should open a terminal which will proceed to install DirectX on the first run, followed by updating the game, checking the game cache, and then the game will launch with full Tennogen access.
+
+6. After the game successfully launches for the first time, close it and remove the --firstrun option.  
+
+7. Optionally (you probably really want to do this) Install DXVK:
+
 ```
 wget https://github.com/doitsujin/dxvk/releases/download/v0.70/dxvk-0.70.tar.gz
 tar -xvzf dxvk-0.70.tar.gz
@@ -22,8 +29,7 @@ cd ..
 rm -R dxvk-0.70 dxvk-0.70.tar.gz
 ```
 
-5. After that finishes and after the game is installed in steam, browse the steam files and open the Tools folder. Make a backup of Launcher.exe, then copy my Launcher.exe and Launcher.sh into the Tools folder.  
-
-From here run the game in steam, it should open a terminal, then two black boxes will run, then the game will launch with full Tennogen access.  
+You should now be able to play the game!
+  
 
 For the curious - you can open my Launcher.exe in a text editor. it's a wrapper for Launcher.sh which allows arguments to be passed through it. You can use the same arguments as my standalone script.
