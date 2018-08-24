@@ -1,6 +1,6 @@
 #!/bin/bash
 # exit on first error, comment out for debugging
-#set -e
+set -e
 
 # If we are not already running in a terminal
 if [ ! -t 1 ]; then
@@ -263,5 +263,4 @@ if [ "$start_game" = true ] ; then
 	"$PROTON" run $EXEPREFIX$WARFRAME_EXE -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam
 
 fi
-read
 
