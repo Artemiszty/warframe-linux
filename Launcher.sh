@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # exit on first error, comment out for debugging
-set -e
+#set -e
 
 # If we are not already running in a terminal
 if [ ! -t 1 ]; then
@@ -27,13 +27,14 @@ export PULSE_LATENCY_MSEC=60
 export WINEPREFIX
 export WINEARCH=${WINEARCH:-win64}
 export WINEDEBUG=${WINEDEBUG:--all}
-export STEAM_COMPAT_DATA_PATH=$WINEPREFIX
 export EXEPREFIX=$(echo "${PWD:0:-14}"Warframe/)
-
 export __GL_THREADED_OPTIMIZATIONS=1
 export MESA_GLTHREAD=TRUE
+export PBA_DISABLE=1
+export WINEESYNC=1
 
 WARFRAME_EXE="Warframe.x64.exe"
+export WINPATH=Z:$(echo $EXEPREFIX$WARFRAME_EXE | sed 's#/#\\#g')
 
 
 function print_synopsis {
@@ -103,17 +104,15 @@ echo "********************************"
 echo "Preparing prefix for first run."
 echo "********************************"
 
-echo "Downloading DirectX..."
+echo "Downloading Direct X..."
 
-curl -A "Mozilla/5.0" https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe --retry 10 --retry-max-time 10 -o directx_Jun2010_redist.exe
+curl -A Mozilla/5.0 https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe -o directx_Jun2010_redist.exe
 
-echo "Extracting DirectX install files, please wait...this will take a minute."
+echo "Extracting Direct X... install files"
 "$WINE" "$EXEPREFIX"Tools/directx_Jun2010_redist.exe /Q /T:C:\\dx9temp
-#7z -odx9 e "$EXEPREFIX"Tools/directx_Jun2010_redist.exe -y &> /dev/null
 
-echo "Installing DirectX..."
+echo "Installing Direct X... please wait...this will take a minute."
 "$WINE" $WINEPREFIX/drive_c/dx9temp/DXSETUP.exe /silent
-#"$WINE" "$EXEPREFIX"Tools/dx9/DXSETUP.EXE /silent
 
 rm -R $WINEPREFIX/drive_c/dx9temp directx_Jun2010_redist.exe
 	
@@ -133,7 +132,7 @@ if [ "$do_update" = true ] ; then
 
 	#keep wget as a backup in case curl fails
 	#wget -qN http://origin.warframe.com/index.txt.lzma
-	curl -A "Mozilla/5.0" http://origin.warframe.com/index.txt.lzma --retry 10 --retry-max-time 10 -o index.txt.lzma
+	curl -s -A Mozilla/5.0 http://origin.warframe.com/index.txt.lzma -o index.txt.lzma
 	unlzma -f index.txt.lzma
 
 
@@ -151,7 +150,7 @@ if [ "$do_update" = true ] ; then
 		# get the raw filename with md5sum and lzma extension
 		RAW_FILENAME=$(echo $line | awk -F, '{print $1}')
 		# path to local file currently tested
-		LOCAL_PATH="$EXEPREFIX${RAW_FILENAME:0:-38}"
+		LOCAL_PATH="$EXEPREFIX${RAW_FILENAME:1:-38}"
 
 		#check if local_index.txt exists
 		if [ -f "local_index.txt" ]; then
@@ -159,16 +158,34 @@ if [ "$do_update" = true ] ; then
 			if grep -q "$RAW_FILENAME" "local_index.txt"; then
 				#if it's in the list, check if the file exists already
 				if [ ! -f "$LOCAL_PATH" ]; then
-					# if file doesnt exist, add it to download list
-					echo "$line" >> updates.txt
+					# if file doesnt exist, add it to download list, exempt launcher and Cache.windows
+                    if [[ "$LOCAL_PATH" == *"Cache.Windows"* ]]; then
+                        echo "Skipping Cache.Windows update"
+                    elif [[ "$LOCAL_PATH" == *"Launcher"* ]]; then
+                        echo "Skipping Launcher update"
+                    else
+                        echo "$line" >> updates.txt
+                    fi
 				fi
 			else
-				#if new md5sum isn't in local index list, add it to download list
-				echo "$line" >> updates.txt
+				#if new md5sum isn't in local index list, add it to download list, exempt launcher and Cache.windows
+				if [[ "$LOCAL_PATH" == *"Cache.Windows"* ]]; then
+                    echo "Skipping Cache.Windows update"
+                elif [[ "$LOCAL_PATH" == *"Launcher"* ]]; then
+                    echo "Skipping Launcher update"
+                else
+                    echo "$line" >> updates.txt
+				fi
 			fi
 		else
-			#if no md5sum list exists, download all files and log md5sums
-			echo "$line" >> updates.txt
+			#if no md5sum list exists, download all files and log md5sums, exempt launcher and Cache.windows
+				if [[ "$LOCAL_PATH" == *"Cache.Windows"* ]]; then
+                    echo "Skipping Cache.Windows update"
+                elif [[ "$LOCAL_PATH" == *"Launcher"* ]]; then
+                    echo "Skipping Launcher update"
+                else
+                    echo "$line" >> updates.txt
+				fi
 		fi
 	done < index.txt
 
@@ -197,10 +214,10 @@ if [ "$do_update" = true ] ; then
 		#convert it to lower case
 		MD5SUM=${MD5SUM,,}
 		#path to local file currently tested
-		LOCAL_FILENAME="${RAW_FILENAME:0:-38}"
+		LOCAL_FILENAME="${RAW_FILENAME:1:-38}"
 		LOCAL_PATH="$EXEPREFIX${LOCAL_FILENAME}"
 		#URL where to download the latest file
-		DOWNLOAD_URL="http://content.warframe.com$RAW_FILENAME"
+		DOWNLOAD_URL="http://origin.warframe.com$RAW_FILENAME"
 		#path to local file to be downloaded
 		LZMA_PATH="$EXEPREFIX${RAW_FILENAME}"
 		#path to downloaded and extracted file
@@ -238,25 +255,23 @@ if [ "$do_update" = true ] ; then
 		#do download
 		if [ "$do_update" = true ]; then
 			#show progress percentage for each downloading file
+            echo "Total update progress: $PERCENT% Downloading: ${RAW_FILENAME:0:-38}"
 			#download file and replace old file
-			#keep wget as a backup in case curl fails
-			#wget -x -O "$EXEPREFIX$line" http://content.warframe.com$line
-            if [ ! -d "$(dirname "$LOCAL_PATH")" ]; then
-                if [[ "$LOCAL_PATH" == *"Launcher"* ]]; then
-                    echo "$(dirname "$LOCAL_PATH")"
-                    echo "Skipping launcher update"
-                fi
-            else
-                if [[ "$LOCAL_PATH" == *"Cache.Windows"* ]]; then
-                    echo "$(dirname "$LOCAL_PATH")"
-                    echo "Skipping cache update (handled by Warframe exe)"
-                else
-            	    echo "Total update progress: $PERCENT% Downloading: ${RAW_FILENAME:0:-38}"
-                    mkdir -p "$(dirname "$LOCAL_PATH")"
-                    echo "$LOCAL_PATH"
-                    curl -A "Mozilla/5.0" $DOWNLOAD_URL --retry 10 --retry-max-time 10 | unlzma - > "$LOCAL_PATH"
-		fi
-            fi
+			
+			#skip launcher until we figure out how to get steam to use a different file to launch the game
+            #if first run, download all necessary tools and folders except Cache.Windows
+
+                    #if using steam, comment the line below out as steam installs all the tools needed to launch warframe.exe
+                    #if [ "$firstrun" = true ]; then
+                        if [ ! -d "$(dirname "$LOCAL_PATH")" ]; then
+                            mkdir -p "$(dirname "$LOCAL_PATH")"
+                        fi
+                        mkdir -p "$(dirname "$LOCAL_PATH")"
+                        echo $DOWNLOAD_URL
+                        curl -A Mozilla/5.0 $DOWNLOAD_URL | unlzma - > "$LOCAL_PATH"
+                    #if using steam, comment the line below out as steam installs all the tools needed to launch warframe.exe on first run
+                    #fi
+
 		fi
 
 		#update local index
@@ -267,15 +282,20 @@ if [ "$do_update" = true ] ; then
 		PERCENT=$(( ${CURRENT_SIZE}*100/${TOTAL_SIZE} ))
 	done < updates.txt
 	#print finished message
-	echo "$PERCENT% ($CURRENT_SIZE/$TOTAL_SIZE) Finished downloads"
-
+	if [ $PERCENT = 0 ]; then
+        echo "Nothing to update."
+    else
+        echo "$PERCENT% ($CURRENT_SIZE/$TOTAL_SIZE) Finished downloads"
+    fi
+    
 	# cleanup
 	rm updates.txt
 	rm index.*
 
 	# run warframe internal updater
 	cp Launcher.exe Launcher-lutris.exe
-	"$WINE" $EXEPREFIX$WARFRAME_EXE -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/ContentUpdate -registry:Steam
+	echo $WINEPREFIX
+	"$WINE" cmd /C start /b /wait "" "$WINPATH" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/ContentUpdate -registry:Steam
 	rm Launcher.exe.bak
 	mv Launcher.exe Launcher.exe.bak
 	mv Launcher-lutris.exe Launcher.exe
@@ -288,7 +308,7 @@ if [ "$do_cache" = true ] ; then
 	echo "*********************"
 	echo "Optimizing Cache."
 	echo "*********************"
-	"$WINE" $EXEPREFIX$WARFRAME_EXE -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt -registry:Steam
+	"$WINE" cmd /C start /b /wait "" "$WINPATH" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt -registry:Steam
 fi
 
 
@@ -300,9 +320,9 @@ if [ "$start_game" = true ] ; then
 	echo "*********************"
 	echo "Launching Warframe."
 	echo "*********************"
-	"$WINE" $EXEPREFIX$WARFRAME_EXE -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam
+	exec "$WINE" "$EXEPREFIX$WARFRAME_EXE" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam
 
 fi
 
 #uncomment this to stop the terminal from closing
-#read
+read
