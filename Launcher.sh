@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # exit on first error, comment out for debugging
-#set -e
+set -e
 
 # If we are not already running in a terminal
 if [ ! -t 1 ]; then
@@ -295,12 +295,6 @@ if [ "$do_update" = true ] ; then
 		(( CURRENT_SIZE+=$REMOTE_SIZE ))
 		PERCENT=$(( ${CURRENT_SIZE}*100/${TOTAL_SIZE} ))
 	done < updates.txt
-	#print finished message
-	if [ $PERCENT = 0 ]; then
-        echo "Nothing to update."
-    else
-        echo "$PERCENT% ($CURRENT_SIZE/$TOTAL_SIZE) Finished downloads"
-    fi
     
 	# cleanup
 	rm updates.txt
@@ -308,7 +302,6 @@ if [ "$do_update" = true ] ; then
 
 	# run warframe internal updater
 	cp Launcher.exe Launcher-lutris.exe
-	echo $WINEPREFIX
 	"$WINE" cmd /C start /b /wait "" "$WINPATH" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/ContentUpdate -registry:Steam
 	rm Launcher.exe.bak
 	mv Launcher.exe Launcher.exe.bak
@@ -334,9 +327,9 @@ if [ "$start_game" = true ] ; then
 	echo "*********************"
 	echo "Launching Warframe."
 	echo "*********************"
-	exec "$WINE" "$EXEPREFIX$WARFRAME_EXE" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam
+	"$WINE" cmd /C start /b "" "$WINPATH" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam
 
 fi
 
 #uncomment this to stop the terminal from closing
-read
+#read

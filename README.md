@@ -6,17 +6,17 @@ REQUIREMENTS:
 [How to get out of Wine Dependency Hell](https://www.gloriouseggroll.tv/how-to-get-out-of-wine-dependency-hell/)  
 
 2. Install some tools you'll need for the script. You'll have to search for these packages yourself as I do not have/know the package names for every distro:  
-winetricks,lzma/unlzma, curl, md5sum
+winetricks,xz-utils, curl, md5sum
 
 3. Install steam via wine into a 64 bit wine prefix. This can be done in Lutris or PlayOnLinux. After that, install the game.
 
 4. Browse to the steamapps/common/Warframe/Tools folder. Make a backup of Launcher.exe, then copy my Launcher.exe and Launcher.sh into the Tools folder.
 
-5. Before running the game for the first time, add the launch option --firstrun to Warframe in steam, then press Play.
+5. If you didn't install from Lutris or Play on Linux - before running the game for the first time, add the launch option --firstrun to Warframe in steam.
 
-From here run the game in steam, it should open a terminal which will proceed to install DirectX on the first run, followed by updating the game, checking the game cache, and then the game will launch with full Tennogen access.
+6. It should open a terminal. If you used --firstrun, it will install DirectX and the registry entry it needs followed by updating the game, checking the game cache, and then the game will launch with full Tennogen access.
 
-6. After the game successfully launches for the first time, close it and remove the --firstrun option.  
+7. After the game successfully launches for the first time, close it and remove the --firstrun option if you used it.  
 
 7. Optionally (you probably really want to do this) Install DXVK:
 
