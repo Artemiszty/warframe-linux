@@ -327,9 +327,10 @@ if [ "$start_game" = true ] ; then
 	echo "*********************"
 	echo "Launching Warframe."
 	echo "*********************"
-	"$WINE" cmd /C start /b "" "$WINPATH" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam
+	"$WINE" cmd /C start "" "$WINPATH" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam
 
 fi
 
 #uncomment this to stop the terminal from closing
 #read
+exit 0
