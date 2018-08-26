@@ -39,11 +39,20 @@ echo "Creating wine prefix and performing winetricks."
 echo "*************************************************"
 
 mkdir -p "$GAMEDIR"
-winetricks -q vcrun2015 vcrun2013 devenum xact xinput quartz win7
+winetricks -q xact win7
 
 echo "*************************************************"
 echo "Applying warframe wine prefix registry settings."
 echo "*************************************************"
+
+cat > wf.reg <<EOF
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Wine\DllOverrides]
+"xaudio2_7"="native,builtin"
+
+EOF
+
 $WINE regedit /S wf.reg
 
 echo "*************************************************"
@@ -55,6 +64,7 @@ mkdir -p "${GAMEDIR}/drive_c/users/${USER}/Local Settings/Application Data/Warfr
 echo "*************************************************"
 echo "Copying warframe files."
 echo "*************************************************"
+cp EE.cfg "${GAMEDIR}/drive_c/users/${USER}/Local Settings/Application Data/Warframe/EE.cfg"
 
 cp -R updater.sh README.md "$WFDIR"
 
@@ -77,30 +87,10 @@ chmod a+x uninstall.sh
 echo "*************************************************"
 echo "Installing Direct X."
 echo "*************************************************"
-wget https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe
+curl -A Mozilla/5.0 https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe -o directx_Jun2010_redist.exe
 $WINE directx_Jun2010_redist.exe /Q /T:C:\dx9
 $WINE dx9/dx9/DXSETUP.EXE /silent
-rm -R dx9 directx_Jun2010_redist.exe
-
-echo "*************************************************"
-echo "Installing DXVK."
-echo "*************************************************"
-
-get_latest_release() {
-  curl --silent "https://api.github.com/repos/$1/releases/latest" | # Get latest release from GitHub api
-    grep '"tag_name":' | 
-    sed -E 's/.*"v([^"]+)".*/\1/'  
-    
-}
-
-DXVKVERSION=$(get_latest_release "doitsujin/dxvk")
-wget https://github.com/doitsujin/dxvk/releases/download/v$DXVKVERSION/dxvk-$DXVKVERSION.tar.gz
-tar -xvzf dxvk-$DXVKVERSION.tar.gz
-cd dxvk-$DXVKVERSION
-winetricks --force setup_dxvk.verb
-cd ..
-rm -R dxvk-$DXVKVERSION dxvk-$DXVKVERSION.tar.gz
-
+rm -R dx9
 
 echo "*************************************************"
 echo "Creating warframe shell script"
@@ -112,7 +102,7 @@ cat > warframe.sh <<EOF
 export PULSE_LATENCY_MSEC=60
 export __GL_THREADED_OPTIMIZATIONS=1
 export MESA_GLTHREAD=TRUE
-export __PBA_GEO_HEAP=2048
+export PBA_DISABLE=1
 
 export WINE=$WINE
 export WINEARCH=$WINEARCH
@@ -156,7 +146,7 @@ EOF
 }
 
 # Download warframe.png icon for creating shortcuts
-wget -O warframe.png http://i.imgur.com/lh5YKoc.png -q
+curl -A Mozilla/5.0 http://i.imgur.com/lh5YKoc.png -o warframe.png
 
 read -p "Would you like a menu shortcut? y/n" -n 1 -r
 echo    # (optional) move to a new line
