@@ -1,6 +1,6 @@
 #!/bin/bash
 # exit on first error, comment out for debugging
-set -e
+#set -e
 printenv > envvars.txt
 
 # If we are not already running in a terminal
@@ -29,7 +29,6 @@ export EXEPREFIX=$(echo "${PWD:0:-14}"Warframe/)
 export PROTONDIR=$(echo ${PATH%%:*})
 
 export PROTON=$(echo "${PROTONDIR:0:-9}"proton)
-echo $PROTON
 
 export __GL_THREADED_OPTIMIZATIONS=1
 export MESA_GLTHREAD=TRUE
@@ -130,6 +129,22 @@ Windows Registry Editor Version 5.00
 EOF
 
 "$PROTON" run "$WINEPREFIX"/drive_c/windows/regedit.exe /S "$EXEPREFIX"Tools/wf.reg
+
+echo "Adding patched wininet to proton..."
+
+
+mv "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/wininet.dll.so "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/wininet.dll.so.bak
+cp warframe-proton-fixes/lib/wine/wininet.dll.so "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/wininet.dll.so
+
+mv "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/fakedlls/wininet.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/fakedlls/wininet.dll.bak
+cp warframe-proton-fixes/lib/wine/fakedlls/wininet.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/fakedlls/wininet.dll
+
+mv "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/wininet.dll.so "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/wininet.dll.so.bak
+cp warframe-proton-fixes/lib64/wine/wininet.dll.so "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/wininet.dll.so
+
+mv "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/fakedlls/wininet.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/fakedlls/wininet.dll.bak
+cp warframe-proton-fixes/lib64/wine/fakedlls/wininet.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/fakedlls/wininet.dll
+
 echo "Finished prefix preparation!"
 
 fi
