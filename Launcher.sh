@@ -1,6 +1,7 @@
 #!/bin/bash
 # exit on first error, comment out for debugging
 set -e
+printenv > envvars.txt
 
 # If we are not already running in a terminal
 if [ ! -t 1 ]; then
@@ -25,8 +26,9 @@ export PULSE_LATENCY_MSEC=60
 export WINEPREFIX
 export STEAM_COMPAT_DATA_PATH
 export EXEPREFIX=$(echo "${PWD:0:-14}"Warframe/)
-export PROTONDIR=$(echo "${PWD:0:-14}"Proton*/)
-export PROTON=$(echo "$PROTONDIR"proton)
+export PROTONDIR=$(echo ${PATH%%:*})
+
+export PROTON=$(echo "${PROTONDIR:0:-9}"proton)
 echo $PROTON
 
 export __GL_THREADED_OPTIMIZATIONS=1
@@ -106,15 +108,15 @@ echo "********************************"
 
 echo "Downloading Direct X..."
 
-#curl -A Mozilla/5.0 https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe -o directx_Jun2010_redist.exe
+curl -A Mozilla/5.0 https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe -o directx_Jun2010_redist.exe
 
 echo "Extracting Direct X... install files"
-#"$PROTON" run "$EXEPREFIX"Tools/directx_Jun2010_redist.exe /Q /T:C:\\dx9temp
+"$PROTON" run "$EXEPREFIX"Tools/directx_Jun2010_redist.exe /Q /T:C:\\dx9temp
 
 echo "Installing Direct X... please wait...this will take a minute."
-#"$PROTON" run "$WINEPREFIX"/drive_c/dx9temp/DXSETUP.exe /silent
+"$PROTON" run "$WINEPREFIX"/drive_c/dx9temp/DXSETUP.exe /silent
 
-#rm -R "$WINEPREFIX"/drive_c/dx9temp directx_Jun2010_redist.exe
+rm -R "$WINEPREFIX"/drive_c/dx9temp directx_Jun2010_redist.exe
 	
 	
 echo "Adding XAudio2_7 dll override to registry..."
@@ -328,5 +330,5 @@ if [ "$start_game" = true ] ; then
 fi
 
 #comment out to allow window to close
-read
+#read
 
