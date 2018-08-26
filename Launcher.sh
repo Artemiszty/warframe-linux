@@ -33,7 +33,9 @@ export MESA_GLTHREAD=TRUE
 export PBA_DISABLE=1
 export WINEESYNC=1
 
-WARFRAME_EXE="Warframe.x64.exe"
+#currently we use the 32 bit exe due to this bug with 64 bit xaudio2_7:
+#https://bugs.winehq.org/show_bug.cgi?id=38668#c72
+WARFRAME_EXE="Warframe.exe"
 export WINPATH=Z:$(echo $EXEPREFIX$WARFRAME_EXE | sed 's#/#\\#g')
 
 
@@ -115,6 +117,18 @@ echo "Installing Direct X... please wait...this will take a minute."
 "$WINE" $WINEPREFIX/drive_c/dx9temp/DXSETUP.exe /silent
 
 rm -R $WINEPREFIX/drive_c/dx9temp directx_Jun2010_redist.exe
+
+echo "Adding XAudio2_7 dll override to registry..."
+
+cat > wf.reg <<EOF
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Wine\DllOverrides]
+"xaudio2_7"="native,builtin"
+
+EOF
+
+$WINE64 regedit /S "$EXEPREFIX"Tools/wf.reg
 	
 echo "Finished prefix preparation!"
 
