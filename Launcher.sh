@@ -27,8 +27,7 @@ export STEAM_COMPAT_DATA_PATH
 export EXEPREFIX=$(echo "${PWD:0:-14}"Warframe/)
 export PROTONDIR=$(echo "${PWD:0:-14}"Proton*/)
 export PROTON=$(echo "$PROTONDIR"proton)
-export WINE32=$(echo "$PROTONDIR"/dist/bin/wine)
-export WINE64=$(echo "$PROTONDIR"/dist/bin/wine64)
+echo $PROTON
 
 export __GL_THREADED_OPTIMIZATIONS=1
 export MESA_GLTHREAD=TRUE
@@ -107,15 +106,15 @@ echo "********************************"
 
 echo "Downloading Direct X..."
 
-curl -A Mozilla/5.0 https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe -o directx_Jun2010_redist.exe
+#curl -A Mozilla/5.0 https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe -o directx_Jun2010_redist.exe
 
 echo "Extracting Direct X... install files"
-"$WINE64" "$EXEPREFIX"Tools/directx_Jun2010_redist.exe /Q /T:C:\\dx9temp
+#"$PROTON" run "$EXEPREFIX"Tools/directx_Jun2010_redist.exe /Q /T:C:\\dx9temp
 
 echo "Installing Direct X... please wait...this will take a minute."
-"$WINE64" "$WINEPREFIX"/drive_c/dx9temp/DXSETUP.exe /silent
+#"$PROTON" run "$WINEPREFIX"/drive_c/dx9temp/DXSETUP.exe /silent
 
-rm -R "$WINEPREFIX"/drive_c/dx9temp directx_Jun2010_redist.exe
+#rm -R "$WINEPREFIX"/drive_c/dx9temp directx_Jun2010_redist.exe
 	
 	
 echo "Adding XAudio2_7 dll override to registry..."
@@ -128,7 +127,7 @@ Windows Registry Editor Version 5.00
 
 EOF
 
-$WINE64 regedit /S "$EXEPREFIX"Tools/wf.reg
+"$PROTON" run "$WINEPREFIX"/drive_c/windows/regedit.exe /S "$EXEPREFIX"Tools/wf.reg
 echo "Finished prefix preparation!"
 
 fi
@@ -299,7 +298,7 @@ if [ "$do_update" = true ] ; then
 
 	# run warframe internal updater
 	cp Launcher.exe Launcher-lutris.exe
-	"$PROTON" run cmd /C start /b /wait "" "$WINPATH" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/ContentUpdate -registry:Steam
+	"$PROTON" run "$WINEPREFIX"/drive_c/windows/system32/cmd.exe /C start /b /wait "" "$WINPATH" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/ContentUpdate -registry:Steam
 	rm Launcher.exe.bak
 	mv Launcher.exe Launcher.exe.bak
 	mv Launcher-lutris.exe Launcher.exe
@@ -312,7 +311,7 @@ if [ "$do_cache" = true ] ; then
 	echo "*********************"
 	echo "Optimizing Cache."
 	echo "*********************"
-	"$PROTON" run cmd /C start /b /wait "" "$WINPATH" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt -registry:Steam
+	"$PROTON" run "$WINEPREFIX"/drive_c/windows/system32/cmd.exe /C start /b /wait "" "$WINPATH" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt -registry:Steam
 fi
 
 
@@ -324,8 +323,10 @@ if [ "$start_game" = true ] ; then
 	echo "*********************"
 	echo "Launching Warframe."
 	echo "*********************"
-	exec "$PROTON" run $EXEPREFIX$WARFRAME_EXE -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam &> wfupdate.txt
+	"$PROTON" run "$WINEPREFIX"/drive_c/windows/system32/cmd.exe /C start /b "" "$WINPATH" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam
 
 fi
+
+#comment out to allow window to close
 read
 
