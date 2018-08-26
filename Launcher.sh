@@ -302,12 +302,6 @@ if [ "$do_update" = true ] ; then
 		(( CURRENT_SIZE+=$REMOTE_SIZE ))
 		PERCENT=$(( ${CURRENT_SIZE}*100/${TOTAL_SIZE} ))
 	done < updates.txt
-	#print finished message
-	if [ $PERCENT = 0 ]; then
-        echo "Nothing to update."
-    else
-        echo "$PERCENT% ($CURRENT_SIZE/$TOTAL_SIZE) Finished downloads"
-    fi
 
 	# cleanup
 	rm updates.txt
