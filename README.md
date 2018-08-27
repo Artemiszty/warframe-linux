@@ -1,3 +1,7 @@
+## Currently known bugs:
+Proton seems to close the game after about 10-15 minutes. Currently unsure of the cause as it doesn't produce anything useful in the logs, although I have a hunch it's because of the way it's launched. I've tried also linking warframe.exe in the tools folder as Launcher.exe and running it with the arguments it needs, but that still doesn't work.
+
+
 ## Installation Instructions  
 
 REQUIREMENTS:  
