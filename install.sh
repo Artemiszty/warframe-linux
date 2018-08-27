@@ -64,7 +64,6 @@ mkdir -p "${GAMEDIR}/drive_c/users/${USER}/Local Settings/Application Data/Warfr
 echo "*************************************************"
 echo "Copying warframe files."
 echo "*************************************************"
-cp EE.cfg "${GAMEDIR}/drive_c/users/${USER}/Local Settings/Application Data/Warframe/EE.cfg"
 
 cp -R updater.sh README.md "$WFDIR"
 
