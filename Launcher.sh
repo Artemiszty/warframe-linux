@@ -1,7 +1,6 @@
 #!/bin/bash
 # exit on first error, comment out for debugging
 #set -e
-printenv > envvars.txt
 
 # If we are not already running in a terminal
 if [ ! -t 1 ]; then
@@ -23,7 +22,6 @@ fi
 #fi
 
 export PULSE_LATENCY_MSEC=60
-export WINEPREFIX
 export STEAM_COMPAT_DATA_PATH
 export EXEPREFIX=$(echo "${PWD:0:-14}"Warframe/)
 export PROTONDIR=$(echo ${PATH%%:*})
@@ -113,9 +111,9 @@ echo "Extracting Direct X... install files"
 "$PROTON" run "$EXEPREFIX"Tools/directx_Jun2010_redist.exe /Q /T:C:\\dx9temp
 
 echo "Installing Direct X... please wait...this will take a minute."
-"$PROTON" run "$WINEPREFIX"/drive_c/dx9temp/DXSETUP.exe /silent
+"$PROTON" run "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/dx9temp/DXSETUP.exe /silent
 
-rm -R "$WINEPREFIX"/drive_c/dx9temp directx_Jun2010_redist.exe
+rm -R "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/dx9temp directx_Jun2010_redist.exe
 	
 	
 echo "Adding XAudio2_7 dll override to registry..."
@@ -128,7 +126,7 @@ Windows Registry Editor Version 5.00
 
 EOF
 
-"$PROTON" run "$WINEPREFIX"/drive_c/windows/regedit.exe /S "$EXEPREFIX"Tools/wf.reg
+"$PROTON" run "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/regedit.exe /S "$EXEPREFIX"Tools/wf.reg
 
 echo "Adding patched wininet to proton..."
 
@@ -144,6 +142,10 @@ cp warframe-proton-fixes/lib64/wine/wininet.dll.so "$(echo "${PROTONDIR:0:-9}")"
 
 mv "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/fakedlls/wininet.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/fakedlls/wininet.dll.bak
 cp warframe-proton-fixes/lib64/wine/fakedlls/wininet.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/fakedlls/wininet.dll
+
+cp warframe-proton-fixes/lib64/wine/fakedlls/wininet.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/wininet.dll
+cp warframe-proton-fixes/lib/wine/fakedlls/wininet.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/wininet.dll
+
 
 echo "Finished prefix preparation!"
 
@@ -309,7 +311,7 @@ if [ "$do_update" = true ] ; then
 
 	# run warframe internal updater
 	cp Launcher.exe Launcher-lutris.exe
-	"$PROTON" run "$WINEPREFIX"/drive_c/windows/system32/cmd.exe /C start /b /wait "" "$WINPATH" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/ContentUpdate -registry:Steam
+	"$PROTON" run "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/cmd.exe /C start /b /wait "" "$WINPATH" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/ContentUpdate -registry:Steam
 	rm Launcher.exe.bak
 	mv Launcher.exe Launcher.exe.bak
 	mv Launcher-lutris.exe Launcher.exe
@@ -322,7 +324,7 @@ if [ "$do_cache" = true ] ; then
 	echo "*********************"
 	echo "Optimizing Cache."
 	echo "*********************"
-	"$PROTON" run "$WINEPREFIX"/drive_c/windows/system32/cmd.exe /C start /b /wait "" "$WINPATH" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt -registry:Steam
+	"$PROTON" run "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/cmd.exe /C start /b /wait "" "$WINPATH" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt -registry:Steam
 fi
 
 
@@ -334,7 +336,7 @@ if [ "$start_game" = true ] ; then
 	echo "*********************"
 	echo "Launching Warframe."
 	echo "*********************"
-	"$PROTON" run "$WINEPREFIX"/drive_c/windows/system32/cmd.exe /C start /b "" "$WINPATH" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam
+	"$PROTON" run "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/cmd.exe /C start /wait "" "$WINPATH" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam
 
 fi
 
