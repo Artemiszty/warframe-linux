@@ -219,6 +219,13 @@ if [ "$do_update" = true ] ; then
 				fi
 		fi
 	done < index.txt
+	# sum up total size of updates
+	TOTAL_SIZE=0
+	while read -r line; do
+		# get the remote size of the lzma file when downloading
+		REMOTE_SIZE=$(echo $line | awk -F, '{print $2}' | sed 's/\r//')
+		(( TOTAL_SIZE+=$REMOTE_SIZE ))
+	done < updates.txt
 
 	echo "*********************"
 	echo "Downloading updates."
