@@ -343,8 +343,8 @@ if [ "$start_game" = true ] ; then
 	echo "*********************"
 	echo "Launching Warframe."
 	echo "*********************"
-	"$PROTON" run "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/cmd.exe /C start /wait "" "$WINPATH" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam
-
+	LD_PRELOAD=/home/$USER/.local/share/Steam/ubuntu12_32/gameoverlayrenderer.so:/home/$USER/.local/share/Steam/ubuntu12_64/gameoverlayrenderer.so \
+	exec "$PROTON" waitforexitandrun "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/cmd.exe /C start /unix "$EXEPREFIX$WARFRAME_EXE" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam 2> /dev/null
 fi
 
 #comment out to allow window to close
