@@ -227,7 +227,7 @@ if [ "$do_update" = true ] ; then
 			#show progress percentage for each downloading file
             echo "Total update progress: $PERCENT% Downloading: ${RAW_FILENAME:0:-38}"
 			#download file and replace old file
-			
+
 			#skip launcher until we figure out how to get steam to use a different file to launch the game
             #if first run, download all necessary tools and folders except Cache.Windows
 
@@ -251,13 +251,13 @@ if [ "$do_update" = true ] ; then
 		(( CURRENT_SIZE+=$REMOTE_SIZE ))
 		PERCENT=$(( ${CURRENT_SIZE}*100/${TOTAL_SIZE} ))
 	done < updates.txt
-    
+
 	# cleanup
 	rm updates.txt
 	rm index.*
 
 	# run warframe internal updater
-	"$WINE" cmd /C start /b /wait "" "$WINPATH" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/ContentUpdate
+	"$WINE" cmd /C "$WINPATH" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/ContentUpdate
 fi
 
 
@@ -268,7 +268,7 @@ if [ "$do_cache" = true ] ; then
 	echo "*********************"
 	echo "Optimizing Cache."
 	echo "*********************"
-	$WINE cmd /C start /b /wait "" "$WINPATH"  -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt
+	"$WINE" cmd /C "$WINPATH"  -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt
 fi
 
 
@@ -281,6 +281,5 @@ if [ "$start_game" = true ] ; then
 	echo "Launching Warframe."
 	echo "*********************"
 
-	$WINE cmd /C start /b "" "$WINPATH" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0
+	"$WINE" cmd /C start /b "" "$WINPATH" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0
 fi
-
