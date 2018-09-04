@@ -25,6 +25,7 @@ export PULSE_LATENCY_MSEC=60
 export STEAM_COMPAT_DATA_PATH
 export EXEPREFIX=$(echo "${PWD:0:-14}"Warframe/)
 export PROTONDIR=$(echo ${PATH%%:*})
+export DXVK_CONFIG_FILE=$(echo "$EXEPREFIX"dxvk-patched/dxvk.conf)
 
 export PROTON=$(echo "${PROTONDIR:0:-9}"proton)
 
@@ -146,6 +147,19 @@ cp warframe-proton-fixes/lib64/wine/fakedlls/wininet.dll "$(echo "${PROTONDIR:0:
 cp warframe-proton-fixes/lib64/wine/fakedlls/wininet.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/wininet.dll
 cp warframe-proton-fixes/lib/wine/fakedlls/wininet.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/wininet.dll
 
+echo "Adding patched dxvk to proton..."
+
+mv "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/dxvk/d3d11.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/dxvk/d3d11.dll.bak
+cp dxvk-patched/x64/d3d11.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/dxvk/d3d11.dll
+
+mv "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/dxvk/dxgi.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/dxvk/dxgi.dll.bak
+cp dxvk-patched/x64/dxgi.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/dxvk/dxgi.dll
+
+mv "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/dxvk/d3d11.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/dxvk/d3d11.dll.bak
+cp dxvk-patched/x32/d3d11.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/dxvk/d3d11.dll
+
+mv "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/dxvk/dxgi.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/dxvk/dxgi.dll.bak
+cp dxvk-patched/x32/dxgi.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/dxvk/dxgi.dll
 
 echo "Finished prefix preparation!"
 
