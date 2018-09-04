@@ -1,25 +1,28 @@
 ## Currently known bugs:
-You will need to plug in a controller. Proton auto-closes warframe after a few minutes if it does not detect one. You do not have to use the controller to play.
+-You will need to plug in a controller. Proton auto-closes warframe after a few minutes if it does not detect one. You do not have to use the controller to play.  
 
+-Does not work with beta version of proton  
 
 ## Installation Instructions  
 
 REQUIREMENTS:  
 
-1. Install some tools you'll need for the script. You'll have to search for these packages yourself as I do not have/know the package names for every distro:  
+1. Make sure you are using Proton 3.7 (NOT BETA). The beta version has a lot of problems.
+
+2. Install some tools you'll need for the script. You'll have to search for these packages yourself as I do not have/know the package names for every distro:  
 xz-utils, curl, md5sum  
 
-2. Install the game in steam.  
+3. Install the game in steam.  
 
-3. After the game is installed in steam, browse the steam files and open the Tools folder. Make a backup of Launcher.exe, then copy everything to the tools folder.  
+4. After the game is installed in steam, browse the steam files and open the Tools folder. Make a backup of Launcher.exe, then copy everything to the tools folder.  
 
-4. Plug in a controller. For whatever reason the current version of steam forces Warframe closed if it doesn't detect a controller within the first 5 minutes. (You do not have to use a controller to play the game.)
+5. Plug in a controller. For whatever reason the current version of steam forces Warframe closed if it doesn't detect a controller within the first 5 minutes. (You do not have to use a controller to play the game.)
 
-5. In steam add --firstrun as a launch option, press play  
+6. In steam add --firstrun as a launch option, press play  
 
-6. The game will prepare the prefix, patch wininet, update, defrag the cache, then launch.  
+7. The game will prepare the prefix, patch wininet, update, defrag the cache, then launch.  
 
-7. Remove the --firstrun option afterwards.  
+8. Remove the --firstrun option afterwards.  
 
 
 For the curious -  
