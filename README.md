@@ -18,11 +18,7 @@ xz-utils, curl, md5sum
 
 5. Plug in a controller. For whatever reason the current version of steam forces Warframe closed if it doesn't detect a controller within the first 5 minutes. (You do not have to use a controller to play the game.)
 
-6. In steam add --firstrun as a launch option, press play  
-
-7. The game will prepare the prefix, patch wininet, update, defrag the cache, then launch.  
-
-8. Remove the --firstrun option afterwards.  
+6. The game will prepare the prefix, patch wininet, update, defrag the cache, then launch.
 
 
 For the curious -  
