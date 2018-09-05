@@ -125,6 +125,9 @@ Windows Registry Editor Version 5.00
 [HKEY_CURRENT_USER\Software\Wine\DllOverrides]
 "xaudio2_7"="native,builtin"
 
+[HKEY_CURRENT_USER\Software\Wine\X11 Driver]
+"GrabFullScreen"="Y"
+
 EOF
 
 "$PROTON" run "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/regedit.exe /S "$EXEPREFIX"Tools/wf.reg
