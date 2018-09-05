@@ -33,6 +33,22 @@ export MESA_GLTHREAD=TRUE
 export PBA_DISABLE=1
 export WINEESYNC=1
 
+# warframe directory in steamapps common
+export WARFRAME_DIR="$(dirname "${PWD}")"
+
+# automatically enable firstrun flag when FIRSTRUN_FILE is missing
+export FIRSTRUN_FILE="${WARFRAME_DIR}/firstrun.done"
+if [ -f "$FIRSTRUN_FILE" ]; then
+	firstrun=false
+else
+	firstrun=true
+	echo "***********************"
+	echo "Enabling firstrun flag.   "
+	echo "***********************"
+	touch "${FIRSTRUN_FILE}"
+	echo "FIRSTRUN = true"
+fi
+
 #currently we use the 32 bit exe due to this bug with 64 bit xaudio2_7:
 #https://bugs.winehq.org/show_bug.cgi?id=38668#c72
 WARFRAME_EXE="Warframe.exe"
