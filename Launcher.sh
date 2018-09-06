@@ -74,7 +74,6 @@ do_update=true
 do_cache=true
 start_game=true
 verbose=false
-firstrun=false
 #############################################################
 # parse command line arguments
 #############################################################
