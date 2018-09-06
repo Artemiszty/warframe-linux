@@ -351,7 +351,7 @@ if [ "$do_update" = true ] ; then
 
 	# run warframe internal updater
 	cp Launcher.exe Launcher-lutris.exe
-	"$PROTON" run "$WINPATH" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/ContentUpdate -registry:Steam
+	"$PROTON" run "$EXEPREFIX$WARFRAME_EXE" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/ContentUpdate -registry:Steam
 	rm Launcher.exe.bak
 	mv Launcher.exe Launcher.exe.bak
 	mv Launcher-lutris.exe Launcher.exe
@@ -364,7 +364,7 @@ if [ "$do_cache" = true ] ; then
 	echo "*********************"
 	echo "Optimizing Cache."
 	echo "*********************"
-	"$PROTON" run "$WINPATH" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt -registry:Steam
+	"$PROTON" run "$EXEPREFIX$WARFRAME_EXE" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt -registry:Steam
 fi
 
 
@@ -377,7 +377,7 @@ if [ "$start_game" = true ] ; then
 	echo "Launching Warframe."
 	echo "*********************"
 	LD_PRELOAD=/home/$USER/.local/share/Steam/ubuntu12_32/gameoverlayrenderer.so:/home/$USER/.local/share/Steam/ubuntu12_64/gameoverlayrenderer.so \
-	exec "$PROTON" waitforexitandrun "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/cmd.exe /C start /unix "$EXEPREFIX$WARFRAME_EXE" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam 2> /dev/null
+	exec "$PROTON" waitforexitandrun "$EXEPREFIX$WARFRAME_EXE" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam 2> /dev/null
 fi
 
 #comment out to allow window to close
