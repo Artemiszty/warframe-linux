@@ -191,6 +191,11 @@ cp dxvk-patched/x32/d3d11.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/dxvk/d3
 mv "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/dxvk/dxgi.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/dxvk/dxgi.dll.bak
 cp dxvk-patched/x32/dxgi.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/dxvk/dxgi.dll
 
+cp dxvk-patched/x64/dxgi.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/dxgi.dll
+cp dxvk-patched/x64/d3d11.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/d3d11.dll
+cp dxvk-patched/x32/dxgi.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/dxgi.dll
+cp dxvk-patched/x32/d3d11.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d11.dll
+
 echo "Finished prefix preparation!"
 
 fi
