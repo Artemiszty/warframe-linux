@@ -102,7 +102,6 @@ while [[ $# -gt 0 ]]; do
 		;;
 		"-language:"*)
 		language="$key"
-		echo $language
 		;;
 		-v|--verbose)
 		verbose=true
