@@ -50,10 +50,10 @@ fi
 
 #currently we use the 32 bit exe due to this bug with 64 bit xaudio2_7:
 #https://bugs.winehq.org/show_bug.cgi?id=38668#c72
-WARFRAME_EXE="Warframe.x64.exe"
+WARFRAME_EXE="Warframe.exe"
 export WINPATH=Z:$(echo $EXEPREFIX$WARFRAME_EXE | sed 's#/#\\#g')
 
-if [ "$WARFRAME_EXE" = "Warframe.exe" ]; then
+if [ "$WARFRAME_EXE" = "Warframe.x64.exe" ]; then
 	export WINE=$(echo "${PROTONDIR}"wine64)
 else
 	export WINE=$(echo "${PROTONDIR}"wine)	
@@ -67,6 +67,8 @@ function print_synopsis {
 	echo "    --no-update         explicitly disable updating of warframe."
 	echo "    --no-cache          explicitly disable cache optimization of warframe cache files."
 	echo "    --no-game           explicitly disable launching of warframe."
+	echo "    -language:xx        changes the game's language. example: -language:en"
+	echo "                        supported languages: de,en,es,fr,it,ja,ko,pl,pt,ru,tc,uk,zh"	
 	echo "    -v, --verbose       print each executed command"
 	echo "    -h, --help          print this help message and quit"
 }
@@ -78,6 +80,7 @@ do_update=true
 do_cache=true
 start_game=true
 verbose=false
+language="-language:en"
 #############################################################
 # parse command line arguments
 #############################################################
@@ -96,6 +99,10 @@ while [[ $# -gt 0 ]]; do
 		;;
 		--no-game)
 		start_game=false
+		;;
+		"-language:"*)
+		language="$key"
+		echo $language
 		;;
 		-v|--verbose)
 		verbose=true
@@ -356,7 +363,7 @@ if [ "$do_update" = true ] ; then
 
 	# run warframe internal updater
 	cp Launcher.exe Launcher-lutris.exe
-	"$PROTON" run "$EXEPREFIX$WARFRAME_EXE" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/ContentUpdate -registry:Steam
+	"$PROTON" run "$EXEPREFIX$WARFRAME_EXE" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public "$language" -applet:/EE/Types/Framework/ContentUpdate -registry:Steam
 	rm Launcher.exe.bak
 	mv Launcher.exe Launcher.exe.bak
 	mv Launcher-lutris.exe Launcher.exe
@@ -369,7 +376,7 @@ if [ "$do_cache" = true ] ; then
 	echo "*********************"
 	echo "Optimizing Cache."
 	echo "*********************"
-	"$PROTON" run "$EXEPREFIX$WARFRAME_EXE" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt -registry:Steam
+	"$PROTON" run "$EXEPREFIX$WARFRAME_EXE" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public "$language" -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt -registry:Steam
 fi
 
 
@@ -381,9 +388,8 @@ if [ "$start_game" = true ] ; then
 	echo "*********************"
 	echo "Launching Warframe."
 	echo "*********************"
-	echo "$WINE"
 	LD_PRELOAD=/home/$USER/.local/share/Steam/ubuntu12_32/gameoverlayrenderer.so:/home/$USER/.local/share/Steam/ubuntu12_64/gameoverlayrenderer.so \
-	"$WINE" cmd /C start /unix "$EXEPREFIX$WARFRAME_EXE" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam 2> /dev/null
+	"$WINE" cmd /C start /unix "$EXEPREFIX$WARFRAME_EXE" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public "$language" -fullscreen:0 -registry:Steam 2> /dev/null
 fi
 
 #comment out to allow window to close
