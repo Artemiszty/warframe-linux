@@ -50,8 +50,14 @@ fi
 
 #currently we use the 32 bit exe due to this bug with 64 bit xaudio2_7:
 #https://bugs.winehq.org/show_bug.cgi?id=38668#c72
-WARFRAME_EXE="Warframe.exe"
+WARFRAME_EXE="Warframe.x64.exe"
 export WINPATH=Z:$(echo $EXEPREFIX$WARFRAME_EXE | sed 's#/#\\#g')
+
+if [ "$WARFRAME_EXE" = "Warframe.exe" ]; then
+	export WINE=$(echo "${PROTONDIR}"wine64)
+else
+	export WINE=$(echo "${PROTONDIR}"wine)	
+fi
 
 function print_synopsis {
 	echo "$0 [options]"
@@ -375,10 +381,10 @@ if [ "$start_game" = true ] ; then
 	echo "*********************"
 	echo "Launching Warframe."
 	echo "*********************"
+	echo "$WINE"
 	LD_PRELOAD=/home/$USER/.local/share/Steam/ubuntu12_32/gameoverlayrenderer.so:/home/$USER/.local/share/Steam/ubuntu12_64/gameoverlayrenderer.so \
-	exec "$PROTON" waitforexitandrun "$EXEPREFIX$WARFRAME_EXE" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam 2> /dev/null
+	"$WINE" cmd /C start /unix "$EXEPREFIX$WARFRAME_EXE" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0 -registry:Steam 2> /dev/null
 fi
 
 #comment out to allow window to close
 #read
-
