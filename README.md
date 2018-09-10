@@ -26,3 +26,7 @@ https://bugs.winehq.org/show_bug.cgi?id=40598. This has been added to official w
 
 dxvk - these are the latest versions of dxvk patched with the Path of Exile anti-stutter patch found here:
 https://github.com/jomihaka/dxvk-poe-hack. The dxvk.conf toggles what the patch does on and off, so it only works specifically for this game and won't affect your other games.
+
+
+## TROUBLESHOOTING:
+If the game fails to run on its first launch for whatever reason, try adding --firstrun to the launch options, then run it again in steam. If this is successful you can remove --firstrun afterwards.  
