@@ -25,7 +25,7 @@ export PULSE_LATENCY_MSEC=60
 export STEAM_COMPAT_DATA_PATH
 export EXEPREFIX=$(echo "${PWD:0:-14}"Warframe/)
 export PROTONDIR=$(echo ${PATH%%:*})
-export DXVK_CONFIG_FILE=$(echo "$EXEPREFIX"dxvk-patched/dxvk.conf)
+export DXVK_CONFIG_FILE=$(echo "$EXEPREFIX"Tools/dxvk-patched/dxvk.conf)
 
 export PROTON=$(echo "${PROTONDIR:0:-9}"proton)
 
