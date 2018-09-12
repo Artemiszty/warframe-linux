@@ -5,7 +5,7 @@
 # If we are not already running in a terminal
 if [ ! -t 1 ]; then
 	# Find a suitable one
-	for i in x-terminal-emulator xterm gnome-terminal; do
+	for i in xterm gnome-terminal; do
 		if which $i &>/dev/null; then
 			# And respawn ourself inside it
 			exec $i -e "$0" "$@"
@@ -25,7 +25,6 @@ export PULSE_LATENCY_MSEC=60
 export STEAM_COMPAT_DATA_PATH
 export EXEPREFIX=$(echo "${PWD:0:-14}"Warframe/)
 export PROTONDIR=$(echo ${PATH%%:*})
-export DXVK_CONFIG_FILE=$(echo "$EXEPREFIX"Tools/dxvk-patched/dxvk.conf)
 
 export PROTON=$(echo "${PROTONDIR:0:-9}"proton)
 
@@ -178,18 +177,6 @@ cp warframe-proton-fixes/lib64/wine/fakedlls/wininet.dll "$STEAM_COMPAT_DATA_PAT
 cp warframe-proton-fixes/lib/wine/fakedlls/wininet.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/wininet.dll
 
 echo "Adding patched dxvk to proton..."
-
-mv "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/dxvk/d3d11.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/dxvk/d3d11.dll.bak
-cp dxvk-patched/x64/d3d11.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/dxvk/d3d11.dll
-
-mv "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/dxvk/dxgi.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/dxvk/dxgi.dll.bak
-cp dxvk-patched/x64/dxgi.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/dxvk/dxgi.dll
-
-mv "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/dxvk/d3d11.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/dxvk/d3d11.dll.bak
-cp dxvk-patched/x32/d3d11.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/dxvk/d3d11.dll
-
-mv "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/dxvk/dxgi.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/dxvk/dxgi.dll.bak
-cp dxvk-patched/x32/dxgi.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/dxvk/dxgi.dll
 
 cp dxvk-patched/x64/dxgi.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/dxgi.dll
 cp dxvk-patched/x64/d3d11.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/d3d11.dll
