@@ -149,7 +149,7 @@ cat > wf.reg <<EOF
 Windows Registry Editor Version 5.00
 
 [HKEY_CURRENT_USER\Software\Wine\DllOverrides]
-"xaudio2_7"="native,builtin"
+"xaudio2_7"="native"
 
 [HKEY_CURRENT_USER\Software\Wine\X11 Driver]
 "GrabFullScreen"="Y"
