@@ -1,6 +1,6 @@
 #!/bin/bash
 # exit on first error, comment out for debugging
-#set -e
+set -euo pipefail
 
 # If we are not already running in a terminal
 if [ ! -t 1 ]; then
@@ -14,7 +14,6 @@ if [ ! -t 1 ]; then
 
 	# Couldn't find a terminal to run in. Just continue.
 fi
-
 
 # create folders if they don't exist - comment out for steam
 #if [ ! -d "$WINEPREFIX/drive_c/Program Files/Warframe/Downloaded" ]; then
@@ -122,6 +121,16 @@ while [[ $# -gt 0 ]]; do
 	# Shift after checking all the cases to get the next option
 	shift
 done
+
+# if debug is on, trap on error.
+if [ "$debug" = true ] ; then
+  err_report() {
+    echo "Error on line $1"
+    read -n 1 -s -r -p "Press any key to continue..."
+  }
+
+  trap 'err_report $LINENO' ERR
+fi
 
 # show all executed commands
 if [ "$verbose" = true ] ; then
@@ -394,5 +403,5 @@ fi
 
 #comment out to allow window to close
 if [ "$debug" = true ] ; then
-	read
+  read -n 1 -s -r -p "Successful run! Press any key to continue..."
 fi
