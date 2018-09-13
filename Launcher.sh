@@ -130,6 +130,18 @@ if [ "$debug" = true ] ; then
   }
 
   trap 'err_report $LINENO' ERR
+
+	# show used DXVK version as overlay, can be used to check if DXVK is loaded
+	export DXVK_HUD=version
+	# show used variables
+	echo "STEAM_COMPAT_DATA_PATH --> $STEAM_COMPAT_DATA_PATH"
+	echo "WINE         --> $WINE"
+	echo "PROTON       --> $PROTON"
+	echo "PROTONDIR    --> $PROTONDIR"
+	echo "WARFRAME_DIR --> $WARFRAME_DIR"
+	echo "WINPATH      --> $WINPATH"
+	echo "PATH         --> $PATH"
+	echo "DXVK_HUD     --> $DXVK_HUD"
 fi
 
 # show all executed commands
