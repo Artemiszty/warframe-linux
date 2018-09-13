@@ -68,6 +68,7 @@ function print_synopsis {
 	echo "    --no-game           explicitly disable launching of warframe."
 	echo "    -language:xx        changes the game's language. example: -language:en"
 	echo "                        supported languages: de,en,es,fr,it,ja,ko,pl,pt,ru,tc,uk,zh"	
+	echo "    --debug             enable debug, don't close commandline, pipe errors to file"
 	echo "    -v, --verbose       print each executed command"
 	echo "    -h, --help          print this help message and quit"
 }
@@ -101,6 +102,9 @@ while [[ $# -gt 0 ]]; do
 		;;
 		"-language:"*)
 		language="$key"
+		;;
+		--debug)
+		debug=true
 		;;
 		-v|--verbose)
 		verbose=true
@@ -379,9 +383,16 @@ if [ "$start_game" = true ] ; then
 	echo "*********************"
 	echo "Launching Warframe."
 	echo "*********************"
+	if [ "$debug" = true ] ; then
+		err_dump=warframe_err.txt
+	else
+		err_dump=/dev/null
+	fi
 	LD_PRELOAD=/home/$USER/.local/share/Steam/ubuntu12_32/gameoverlayrenderer.so:/home/$USER/.local/share/Steam/ubuntu12_64/gameoverlayrenderer.so \
-	"$WINE" cmd /C start /unix "$EXEPREFIX$WARFRAME_EXE" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public "$language" -fullscreen:0 -registry:Steam 2> /dev/null
+	"$WINE" cmd /C start /unix "$EXEPREFIX$WARFRAME_EXE" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public "$language" -fullscreen:0 -registry:Steam 2> $err_dump
 fi
 
 #comment out to allow window to close
-#read
+if [ "$debug" = true ] ; then
+	read
+fi
