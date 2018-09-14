@@ -92,6 +92,14 @@ $WINE dx9/dx9/DXSETUP.EXE /silent
 rm -R dx9
 
 echo "*************************************************"
+echo "Installing DXVK."
+echo "*************************************************"
+cd dxvk-master
+winetricks --force setup_dxvk.verb
+cd ..
+
+
+echo "*************************************************"
 echo "Creating warframe shell script"
 echo "*************************************************"
 
