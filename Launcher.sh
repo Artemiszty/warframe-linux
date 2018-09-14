@@ -78,6 +78,7 @@ function print_synopsis {
 do_update=true
 do_cache=true
 start_game=true
+debug=false
 verbose=false
 language="-language:en"
 #############################################################
