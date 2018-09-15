@@ -206,8 +206,15 @@ echo "Adding patched dxvk to proton..."
 
 cp dxvk-patched/x64/dxgi.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/dxgi.dll
 cp dxvk-patched/x64/d3d11.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/d3d11.dll
+cp dxvk-patched/x64/d3d10.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/d3d10.dll
+cp dxvk-patched/x64/d3d10_1.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/d3d10_1.dll
+cp dxvk-patched/x64/d3d10core.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/d3d10core.dll
+
 cp dxvk-patched/x32/dxgi.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/dxgi.dll
 cp dxvk-patched/x32/d3d11.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d11.dll
+cp dxvk-patched/x32/d3d10.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d10.dll
+cp dxvk-patched/x32/d3d10_1.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d10_1.dll
+cp dxvk-patched/x32/d3d10core.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d10core.dll
 
 echo "Finished prefix preparation!"
 
