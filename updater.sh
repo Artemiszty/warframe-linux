@@ -281,5 +281,5 @@ if [ "$start_game" = true ] ; then
 	echo "Launching Warframe."
 	echo "*********************"
 
-	"$WINE" cmd /C start /b "" "$WINPATH" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en -fullscreen:0
+	"$WINE" cmd /C start /b "" "$WINPATH" -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public -language:en
 fi
