@@ -12,8 +12,7 @@ if [ ! -t 1 ]; then
 			# We also need to make sure to use -- to delimit the commands,
 			# as newer gnome-terminals have an issue with -e AND the args
 			# containing a --, like --debug
-			if [ "$i" == "gnome-terminal" ]
-			then
+			if [ "$i" == "gnome-terminal" ]; then
 				exec $i -- "$0" "$@"
 			else
 				exec $i -e "$0" "$@"
