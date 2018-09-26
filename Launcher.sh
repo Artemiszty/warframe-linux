@@ -8,7 +8,15 @@ if [ ! -t 1 ]; then
 	for i in xterm gnome-terminal; do
 		if which $i &>/dev/null; then
 			# And respawn ourself inside it
-			exec $i -e "$0" "$@"
+			
+			# We also need to make sure to use -- to delimit the commands,
+			# as newer gnome-terminals have an issue with -e AND the args
+			# containing a --, like --debug
+			if [ "$i" == "gnome-terminal" ]; then
+				exec $i -- "$0" "$@"
+			else
+				exec $i -e "$0" "$@"
+			fi
 		fi
 	done
 
