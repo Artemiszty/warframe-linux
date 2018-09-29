@@ -15,7 +15,7 @@ xz-utils, curl, md5sum
 
 4. Plug in a controller. For whatever reason the current version of steam forces Warframe closed if it doesn't detect a controller within the first 5 minutes. (You do not have to use a controller to play the game.)
 
-5. The game will prepare the prefix, patch wininet, update, defrag the cache, then launch.
+5. Press Play in Steam.  The game will prepare the prefix, patch wininet, update, defrag the cache, then launch.
 
 
 For the curious -  
