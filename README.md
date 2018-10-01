@@ -11,11 +11,13 @@ xz-utils, curl, md5sum
 
 2. Install the game in steam.  
 
-3. After the game is installed in steam, browse the steam files and open the Tools folder. Make a backup of Launcher.exe, then copy everything to the tools folder.  
+3. After the game is installed in steam, browse the steam files, open the Tools folder and make a backup of the file Launcher.exe.
 
-4. Plug in a controller. For whatever reason the current version of steam forces Warframe closed if it doesn't detect a controller within the first 5 minutes. (You do not have to use a controller to play the game.)
+4. Copy all the files from this repository (unzip/extract) and replace the files in the Tools folder.
 
-5. Press Play in Steam.  The game will prepare the prefix, patch wininet, update, defrag the cache, then launch.
+5. Plug in a controller. For whatever reason the current version of steam forces Warframe closed if it doesn't detect a controller within the first 5 minutes. (You do not have to use a controller to play the game.)
+
+6. Press Play in Steam.  The game will prepare the prefix, patch wininet, update, defrag the cache, then launch.
 
 
 For the curious -  
