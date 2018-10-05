@@ -4,6 +4,13 @@
 
 ## Installation Instructions  
 
+-You will need to run another game with proton first if you have never done so. This forces steam to install a version of proton, as running my script does not trigger that.  
+-You will need to install wine and all of its dependencies, as proton does not come with all of the required packages. Follow instructions here for your distro:  
+
+https://www.gloriouseggroll.tv/how-to-get-out-of-wine-dependency-hell/  
+
+(sorry, I do not have instructions for gentoo or fedora)  
+
 REQUIREMENTS:  
 
 1. Install some tools you'll need for the script. You'll have to search for these packages yourself as I do not have/know the package names for every distro:  
