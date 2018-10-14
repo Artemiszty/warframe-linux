@@ -23,16 +23,10 @@ if [ ! -t 1 ]; then
 	# Couldn't find a terminal to run in. Just continue.
 fi
 
-# create folders if they don't exist - comment out for steam
-#if [ ! -d "$WINEPREFIX/drive_c/Program Files/Warframe/Downloaded" ]; then
-  #mkdir -p "$WINEPREFIX/drive_c/Program Files/Warframe/Downloaded/Public"
-#fi
-
 export PULSE_LATENCY_MSEC=60
 export STEAM_COMPAT_DATA_PATH
 export EXEPREFIX=$(echo "${PWD:0:-14}"Warframe/)
 export PROTONDIR=$(echo ${PATH%%:*})
-
 export PROTON=$(echo "${PROTONDIR:0:-9}"proton)
 
 export __GL_THREADED_OPTIMIZATIONS=1
@@ -192,37 +186,10 @@ EOF
 
 "$PROTON" run "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/regedit.exe /S "$EXEPREFIX"Tools/wf.reg
 
-echo "Adding patched wininet to proton..."
+echo "Copying state cache to steam shadercache directory."
 
-
-mv "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/wininet.dll.so "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/wininet.dll.so.bak
-cp warframe-proton-fixes/lib/wine/wininet.dll.so "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/wininet.dll.so
-
-mv "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/fakedlls/wininet.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/fakedlls/wininet.dll.bak
-cp warframe-proton-fixes/lib/wine/fakedlls/wininet.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib/wine/fakedlls/wininet.dll
-
-mv "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/wininet.dll.so "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/wininet.dll.so.bak
-cp warframe-proton-fixes/lib64/wine/wininet.dll.so "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/wininet.dll.so
-
-mv "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/fakedlls/wininet.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/fakedlls/wininet.dll.bak
-cp warframe-proton-fixes/lib64/wine/fakedlls/wininet.dll "$(echo "${PROTONDIR:0:-9}")"dist/lib64/wine/fakedlls/wininet.dll
-
-cp warframe-proton-fixes/lib64/wine/fakedlls/wininet.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/wininet.dll
-cp warframe-proton-fixes/lib/wine/fakedlls/wininet.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/wininet.dll
-
-echo "Adding patched dxvk to proton..."
-
-cp dxvk-patched/x64/dxgi.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/dxgi.dll
-cp dxvk-patched/x64/d3d11.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/d3d11.dll
-cp dxvk-patched/x64/d3d10.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/d3d10.dll
-cp dxvk-patched/x64/d3d10_1.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/d3d10_1.dll
-cp dxvk-patched/x64/d3d10core.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/d3d10core.dll
-
-cp dxvk-patched/x32/dxgi.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/dxgi.dll
-cp dxvk-patched/x32/d3d11.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d11.dll
-cp dxvk-patched/x32/d3d10.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d10.dll
-cp dxvk-patched/x32/d3d10_1.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d10_1.dll
-cp dxvk-patched/x32/d3d10core.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d10core.dll
+cp Warframe.dxvk-cache $(echo "${PWD:0:-21}"shadercache/230410/DXVK_state_cache/)
+rm Warframe.dxvk-cache
 
 echo "Finished prefix preparation!"
 

@@ -4,6 +4,7 @@
 
 ## Installation Instructions  
 
+-You will need to be using Proton 3.16-beta or higher.
 -You will need to run another game with proton first if you have never done so. This forces steam to install a version of proton, as running my script does not trigger that.  
 -You will need to install wine and all of its dependencies, as proton does not come with all of the required packages. Follow instructions here for your distro:  
 
