@@ -362,7 +362,7 @@ if [ "$do_update" = true ] ; then
 
 	# run warframe internal updater
 	cp Launcher.exe Launcher-lutris.exe
-	"$PROTON" run "$EXEPREFIX$WARFRAME_EXE" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public "$language" -applet:/EE/Types/Framework/ContentUpdate -registry:Steam
+	"$PROTON" run "$EXEPREFIX$WARFRAME_EXE" -silent -log:/Preprocessing_update.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public "$language" -applet:/EE/Types/Framework/ContentUpdate -registry:Steam
 	mv Launcher.exe Launcher.exe.bak
 	mv Launcher-lutris.exe Launcher.exe
 fi
@@ -374,7 +374,7 @@ if [ "$do_cache" = true ] ; then
 	echo "*********************"
 	echo "Optimizing Cache."
 	echo "*********************"
-	"$PROTON" run "$EXEPREFIX$WARFRAME_EXE" -silent -log:/Preprocessing.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public "$language" -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt -registry:Steam
+	"$PROTON" run "$EXEPREFIX$WARFRAME_EXE" -silent -log:/Preprocessing_cache.log -dx10:1 -dx11:1 -threadedworker:1 -cluster:public "$language" -applet:/EE/Types/Framework/CacheDefraggerAsync /Tools/CachePlan.txt -registry:Steam
 fi
 
 
