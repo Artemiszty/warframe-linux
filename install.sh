@@ -65,7 +65,7 @@ echo "*************************************************"
 echo "Copying warframe files."
 echo "*************************************************"
 
-cp -R updater.sh README.md "$WFDIR"
+cp -R updater.sh README.md dxvk-master "$WFDIR"
 
 pushd "$WFDIR"
 
