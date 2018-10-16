@@ -45,14 +45,6 @@ echo "*************************************************"
 echo "Applying warframe wine prefix registry settings."
 echo "*************************************************"
 
-cat > wf.reg <<EOF
-Windows Registry Editor Version 5.00
-
-[HKEY_CURRENT_USER\Software\Wine\DllOverrides]
-"xaudio2_7"="native,builtin"
-
-EOF
-
 $WINE regedit /S wf.reg
 
 echo "*************************************************"
@@ -82,14 +74,6 @@ EOF
 
 chmod a+x updater.sh
 chmod a+x uninstall.sh
-
-echo "*************************************************"
-echo "Installing Direct X."
-echo "*************************************************"
-curl -A Mozilla/5.0 https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe -o directx_Jun2010_redist.exe
-$WINE directx_Jun2010_redist.exe /Q /T:C:\dx9
-$WINE dx9/dx9/DXSETUP.EXE /silent
-rm -R dx9
 
 echo "*************************************************"
 echo "Installing DXVK."

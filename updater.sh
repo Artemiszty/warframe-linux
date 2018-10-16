@@ -5,7 +5,7 @@ set -e
 # If we are not already running in a terminal
 if [ ! -t 1 ]; then
 	# Find a suitable one
-	for i in xterm gnome-terminal; do
+	for i in xterm gnome-terminal konsole; do
 		if which $i &>/dev/null; then
 			# And respawn ourself inside it
 			
