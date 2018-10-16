@@ -39,7 +39,7 @@ echo "Creating wine prefix and performing winetricks."
 echo "*************************************************"
 
 mkdir -p "$GAMEDIR"
-winetricks -q xact win7
+winetricks -q win7
 
 echo "*************************************************"
 echo "Applying warframe wine prefix registry settings."
