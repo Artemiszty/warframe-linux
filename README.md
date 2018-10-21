@@ -1,5 +1,5 @@
 ## Currently known bugs:
--You will need to plug in a controller. Proton auto-closes warframe after a few minutes if it does not detect one. You do not have to use the controller to play.  
+-Proton auto-closes warframe after a few minutes if it does not detect one. You can either plug in a controller, OR if you don't have a controller, install xboxdrv: https://gitlab.com/xboxdrv/xboxdrv and run it as a service before running steam.  
 
 
 ## Installation Instructions  
