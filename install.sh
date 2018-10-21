@@ -65,7 +65,7 @@ echo "*************************************************"
 echo "Copying warframe files."
 echo "*************************************************"
 
-cp -R updater.sh README.md dxvk-master "$WFDIR"
+cp -R updater.sh README.md dxvk-patched FAudio-wma Warframe.x64.dxvk-cache "$WFDIR"
 
 pushd "$WFDIR"
 
@@ -84,20 +84,27 @@ chmod a+x updater.sh
 chmod a+x uninstall.sh
 
 echo "*************************************************"
-echo "Installing Direct X."
+echo "Installing async-patched DXVK."
 echo "*************************************************"
-curl -A Mozilla/5.0 https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe -o directx_Jun2010_redist.exe
-$WINE directx_Jun2010_redist.exe /Q /T:C:\dx9
-$WINE dx9/dx9/DXSETUP.EXE /silent
-rm -R dx9
-
-echo "*************************************************"
-echo "Installing DXVK."
-echo "*************************************************"
-cd dxvk-master
+cd dxvk-patched
 winetricks --force setup_dxvk.verb
 cd ..
 
+echo "*************************************************"
+echo "Installing FAudio with WMA support."
+echo "*************************************************"
+cd FAudio-wma/build_win64
+chmod a+x wine_setup_native && ./wine_setup_native
+cd ../../
+cd FAudio-wma/build_win32
+chmod a+x wine_setup_native && ./wine_setup_native
+cd ../../
+
+echo "*************************************************"
+echo "Installing DXVK-Cache."
+echo "*************************************************"
+mkdir -p "$WFDIR"/Downloaded/Public
+cp Warframe.x64.dxvk-cache "$WFDIR"/Downloaded/Public/
 
 echo "*************************************************"
 echo "Creating warframe shell script"
@@ -115,6 +122,7 @@ export WINE=$WINE
 export WINEARCH=$WINEARCH
 export WINEDEBUG=$WINEDEBUG
 export WINEPREFIX="$WINEPREFIX"
+export DXVK_ASYNC=1
 
 cd "$WFDIR"
 exec ./updater.sh "\$@"

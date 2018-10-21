@@ -1,0 +1,10 @@
+Note: You need to be using TKG's winetricks as it has 64 bit xact enabled:
+https://github.com/Tk-Glitch/PKGBUILDS/tree/master/winetricks-tkg-git
+
+1. Use tkg's winetricks to run:
+WINEARCH=win64 WINEPREFIX=/prefix/patch/here winetricks -q xact
+
+2. Copy both build_win32 and build_win64 to anywhere inside the prefix
+
+3. In each build_* folder, run:
+WINEPREFIX=/path/to/the/prefix ./wine_setup_native
