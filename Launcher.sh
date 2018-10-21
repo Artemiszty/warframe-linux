@@ -28,6 +28,7 @@ export STEAM_COMPAT_DATA_PATH
 export EXEPREFIX=$(echo "${PWD:0:-14}"Warframe/)
 export PROTONDIR=$(echo ${PATH%%:*})
 export PROTON=$(echo "${PROTONDIR:0:-9}"proton)
+export DXVK_ASYNC=1
 
 export __GL_THREADED_OPTIMIZATIONS=1
 export MESA_GLTHREAD=TRUE
@@ -50,7 +51,7 @@ fi
 
 #currently we use the 32 bit exe due to this bug with 64 bit xaudio2_7:
 #https://bugs.winehq.org/show_bug.cgi?id=38668#c72
-WARFRAME_EXE="Warframe.exe"
+WARFRAME_EXE="Warframe.x64.exe"
 export WINPATH=Z:$(echo $EXEPREFIX$WARFRAME_EXE | sed 's#/#\\#g')
 
 if [ "$WARFRAME_EXE" = "Warframe.x64.exe" ]; then
@@ -186,10 +187,33 @@ EOF
 
 "$PROTON" run "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/regedit.exe /S "$EXEPREFIX"Tools/wf.reg
 
+echo "Adding async patched dxvk to prefix..."
+
+cp dxvk-patched/x64/dxgi.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/dxgi.dll
+cp dxvk-patched/x64/d3d11.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/d3d11.dll
+cp dxvk-patched/x64/d3d10.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/d3d10.dll
+cp dxvk-patched/x64/d3d10_1.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/d3d10_1.dll
+cp dxvk-patched/x64/d3d10core.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/system32/d3d10core.dll
+
+cp dxvk-patched/x32/dxgi.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/dxgi.dll
+cp dxvk-patched/x32/d3d11.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d11.dll
+cp dxvk-patched/x32/d3d10.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d10.dll
+cp dxvk-patched/x32/d3d10_1.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d10_1.dll
+cp dxvk-patched/x32/d3d10core.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d10core.dll
+
+echo "Installing FAudio to prefix"
+cp -R FAudio-wma "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/
+cd "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/FAudio-wma/build_win64
+chmod a+x wine_setup_native && ./wine_setup_native
+
+cd "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/FAudio-wma/build_win32
+chmod a+x wine_setup_native && ./wine_setup_native
+
+cd "$EXEPREFIX"Tools/
+
 echo "Copying state cache to steam shadercache directory."
 
-cp Warframe.dxvk-cache $(echo "${PWD:0:-21}"shadercache/230410/DXVK_state_cache/)
-rm Warframe.dxvk-cache
+cp Warframe.x64.dxvk-cache $(echo "${PWD:0:-21}"shadercache/230410/DXVK_state_cache/)
 
 echo "Finished prefix preparation!"
 
