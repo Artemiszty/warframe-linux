@@ -81,4 +81,3 @@ install_dll xapofx1_5 0
 
 ln -sf "$dll_path/FAudio.dll" "$wine_path/FAudio.dll"
 ln -sf "$dll_path/SDL2.dll" "$wine_path/SDL2.dll"
-

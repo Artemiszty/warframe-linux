@@ -43,7 +43,7 @@ export DXVK_ASYNC=1
 
 #currently we use the 32 bit exe due to this bug with 64 bit xaudio2_7:
 #https://bugs.winehq.org/show_bug.cgi?id=38668#c72
-WARFRAME_EXE="Warframe.x64.exe"
+WARFRAME_EXE="Warframe.exe"
 export WINPATH=Z:$(echo $EXEPREFIX$WARFRAME_EXE | sed 's#/#\\#g')
 
 function print_synopsis {
