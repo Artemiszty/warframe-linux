@@ -1,6 +1,6 @@
-## Currently known bugs:
--You will need to plug in a controller. Proton auto-closes warframe after a few minutes if it does not detect one. You do not have to use the controller to play.  
-
+## IMPORTANT:
+-You MUST run the game from steam's "Play" button. You CANNOT run the script by itself. Steam passes environment variables to the script that it needs.  
+-Proton auto-closes warframe after a few minutes if it does not detect a controller. You can either plug in a controller, OR if you don't have a controller, install xboxdrv: https://gitlab.com/xboxdrv/xboxdrv and run it as a service before running steam.  
 
 ## Installation Instructions  
 
@@ -39,4 +39,20 @@ https://github.com/jomihaka/dxvk-poe-hack. The dxvk.conf toggles what the patch 
 
 
 ## TROUBLESHOOTING:
-If the game fails to run on its first launch for whatever reason, try adding --firstrun to the launch options, then run it again in steam. If this is successful you can remove --firstrun afterwards.  
+-Fails to run on first launch:  
+
+Try adding --firstrun to the launch options, then run it again in steam. If this is successful you can remove --firstrun afterwards.  
+If not, add --debug to the launch options and report the error.  
+
+-XAudio2 not found:  
+
+FAudio probably didn't symlink correctly. Open Tools/FAudio-wma/build_win64, then run ./wine_setup_native. Repeat the same for the build_win32 folder.  
+
+-Game crashes after a few minutes:  
+
+Make sure either a controller is plugged in, or you have xboxdrv running before running steam. Also make sure the controller is detected in steam by doing the following:  
+
+Open Steam>settings>Controller>General Controller Configuration.  
+Check the boxes needed for your controller and make sure your controller is listed under Detected Controllers. Only check the boxes you need, not all of them.  
+For xboxdrv the controller will be listed as Unregistered: Xbox 360 Controller.  
+
