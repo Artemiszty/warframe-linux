@@ -201,15 +201,16 @@ cp dxvk-patched/x32/d3d10.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/sysw
 cp dxvk-patched/x32/d3d10_1.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d10_1.dll
 cp dxvk-patched/x32/d3d10core.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d10core.dll
 
-echo "Installing FAudio to prefix"
-cp -R FAudio-wma "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/
-cd "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/FAudio-wma/build_win64
-chmod a+x wine_setup_native && ./wine_setup_native
+# Don't use these yet.
+#echo "Installing FAudio to prefix"
+#cp -R FAudio-wma "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/
+#cd "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/FAudio-wma/build_win64
+#chmod a+x wine_setup_native && ./wine_setup_native
 
-cd "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/FAudio-wma/build_win32
-chmod a+x wine_setup_native && ./wine_setup_native
+#cd "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/FAudio-wma/build_win32
+#chmod a+x wine_setup_native && ./wine_setup_native
 
-cd "$EXEPREFIX"Tools/
+#cd "$EXEPREFIX"Tools/
 
 echo "Copying state cache to steam shadercache directory."
 
