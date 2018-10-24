@@ -100,15 +100,16 @@ cd dxvk-patched
 winetricks --force setup_dxvk.verb
 cd ..
 
-echo "*************************************************"
-echo "Installing FAudio with WMA support."
-echo "*************************************************"
-cd FAudio-wma/build_win64
-chmod a+x wine_setup_native && ./wine_setup_native
-cd ../../
-cd FAudio-wma/build_win32
-chmod a+x wine_setup_native && ./wine_setup_native
-cd ../../
+# Don't use this yet
+#echo "*************************************************"
+#echo "Installing FAudio with WMA support."
+#echo "*************************************************"
+#cd FAudio-wma/build_win64
+#chmod a+x wine_setup_native && ./wine_setup_native
+#cd ../../
+#cd FAudio-wma/build_win32
+#chmod a+x wine_setup_native && ./wine_setup_native
+#cd ../../
 
 echo "*************************************************"
 echo "Installing DXVK-Cache."
