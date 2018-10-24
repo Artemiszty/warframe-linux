@@ -51,7 +51,7 @@ fi
 
 #currently we use the 32 bit exe due to this bug with 64 bit xaudio2_7:
 #https://bugs.winehq.org/show_bug.cgi?id=38668#c72
-WARFRAME_EXE="Warframe.x64.exe"
+WARFRAME_EXE="Warframe.exe"
 export WINPATH=Z:$(echo $EXEPREFIX$WARFRAME_EXE | sed 's#/#\\#g')
 
 if [ "$WARFRAME_EXE" = "Warframe.x64.exe" ]; then
@@ -213,7 +213,7 @@ cd "$EXEPREFIX"Tools/
 
 echo "Copying state cache to steam shadercache directory."
 
-cp Warframe.x64.dxvk-cache $(echo "${PWD:0:-21}"shadercache/230410/DXVK_state_cache/)
+cp Warframe.dxvk-cache $(echo "${PWD:0:-21}"shadercache/230410/DXVK_state_cache/)
 
 echo "Finished prefix preparation!"
 
