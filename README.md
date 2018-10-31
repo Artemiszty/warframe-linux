@@ -1,3 +1,8 @@
+
+DEBIAN IS NOT SUPPORTED.  
+USE ANY OTHER MAJOR DISTRO. LITERALLY TAKE YOUR PICK. ANY UBUNTU VARIETY. ANY ARCH VARIETY. ANY RED HAT VARIETY. SOLUS IS FINE TOO.  
+
+
 ## IMPORTANT:
 -You MUST run the game from steam's "Play" button. You CANNOT run the script by itself. Steam passes environment variables to the script that it needs.  
 -Proton auto-closes warframe after a few minutes if it does not detect a controller. You can either plug in a controller, OR if you don't have a controller, install xboxdrv: https://gitlab.com/xboxdrv/xboxdrv and run it as a service before running steam.  
