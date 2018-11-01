@@ -214,7 +214,7 @@ cp dxvk-patched/x32/d3d10core.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/
 
 echo "Copying state cache to steam shadercache directory."
 
-cp Warframe.dxvk-cache $(echo "${PWD:0:-21}"shadercache/230410/DXVK_state_cache/)
+cp Warframe.dxvk-cache "$(echo "${PWD:0:-21}"shadercache/230410/DXVK_state_cache/)"
 
 echo "Finished prefix preparation!"
 
