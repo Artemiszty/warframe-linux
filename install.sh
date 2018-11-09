@@ -115,7 +115,7 @@ echo "*************************************************"
 echo "Installing DXVK-Cache."
 echo "*************************************************"
 mkdir -p "$WFDIR"/Downloaded/Public
-cp Warframe.x64.dxvk-cache "$WFDIR"/Downloaded/Public/
+cp Warframe.dxvk-cache "$WFDIR"/Downloaded/Public/
 
 echo "*************************************************"
 echo "Creating warframe shell script"
