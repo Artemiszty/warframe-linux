@@ -1,6 +1,8 @@
 DEBIAN IS NOT SUPPORTED.  
 USE ANY OTHER MAJOR DISTRO. LITERALLY TAKE YOUR PICK. ANY UBUNTU VARIETY. ANY ARCH VARIETY. ANY RED HAT VARIETY. SOLUS IS FINE TOO.  
 
+[HOW TO REPORT AN ISSUE](https://gitlab.com/GloriousEggroll/warframe-linux/wikis/how-to-report-an-issue)
+
 ## Installation Instructions
 
 REQUIREMENTS:  
