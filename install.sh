@@ -39,21 +39,7 @@ echo "Creating wine prefix and performing winetricks."
 echo "*************************************************"
 
 mkdir -p "$GAMEDIR"
-winetricks -q xact win7
-
-echo "*************************************************"
-echo "Applying warframe wine prefix registry settings."
-echo "*************************************************"
-
-cat > wf.reg <<EOF
-Windows Registry Editor Version 5.00
-
-[HKEY_CURRENT_USER\Software\Wine\DllOverrides]
-"xaudio2_7"="native,builtin"
-
-EOF
-
-$WINE regedit /S wf.reg
+winetricks -q win7
 
 echo "*************************************************"
 echo "Creating warframe directories."
