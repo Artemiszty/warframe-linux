@@ -157,20 +157,7 @@ echo "********************************"
 echo "Preparing prefix for first run."
 echo "********************************"
 
-echo "Downloading Direct X..."
-
-curl -A Mozilla/5.0 https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe -o directx_Jun2010_redist.exe
-
-echo "Extracting Direct X... install files"
-"$PROTON" run "$EXEPREFIX"Tools/directx_Jun2010_redist.exe /Q /T:C:\\dx9temp
-
-echo "Installing Direct X... please wait...this will take a minute."
-"$PROTON" run "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/dx9temp/DXSETUP.exe /silent
-
-rm -R "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/dx9temp directx_Jun2010_redist.exe
-	
-	
-echo "Adding XAudio2_7 dll override to registry..."
+echo "Adding overrides to registry..."
 
 cat > wf.reg <<EOF
 Windows Registry Editor Version 5.00
