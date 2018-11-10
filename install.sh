@@ -51,7 +51,7 @@ echo "*************************************************"
 echo "Copying warframe files."
 echo "*************************************************"
 
-cp -R updater.sh README.md dxvk-patched FAudio-wma Warframe.x64.dxvk-cache "$WFDIR"
+cp -R updater.sh README.md dxvk-patched FAudio Warframe.x64.dxvk-cache "$WFDIR"
 
 pushd "$WFDIR"
 
