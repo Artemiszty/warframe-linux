@@ -49,9 +49,7 @@ else
 	echo "FIRSTRUN = true"
 fi
 
-#currently we use the 32 bit exe due to this bug with 64 bit xaudio2_7:
-#https://bugs.winehq.org/show_bug.cgi?id=38668#c72
-WARFRAME_EXE="Warframe.exe"
+WARFRAME_EXE="Warframe.x64.exe"
 export WINPATH=Z:$(echo $EXEPREFIX$WARFRAME_EXE | sed 's#/#\\#g')
 
 if [ "$WARFRAME_EXE" = "Warframe.x64.exe" ]; then
@@ -177,9 +175,6 @@ echo "Adding XAudio2_7 dll override to registry..."
 cat > wf.reg <<EOF
 Windows Registry Editor Version 5.00
 
-[HKEY_CURRENT_USER\Software\Wine\DllOverrides]
-"xaudio2_7"="native"
-
 [HKEY_CURRENT_USER\Software\Wine\X11 Driver]
 "GrabFullScreen"="Y"
 
@@ -201,20 +196,16 @@ cp dxvk-patched/x32/d3d10.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/sysw
 cp dxvk-patched/x32/d3d10_1.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d10_1.dll
 cp dxvk-patched/x32/d3d10core.dll "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/windows/syswow64/d3d10core.dll
 
-# Don't use these yet.
-#echo "Installing FAudio to prefix"
-#cp -R FAudio-wma "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/
-#cd "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/FAudio-wma/build_win64
-#chmod a+x wine_setup_native && ./wine_setup_native
-
-#cd "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/FAudio-wma/build_win32
-#chmod a+x wine_setup_native && ./wine_setup_native
+echo "Installing FAudio to prefix"
+cp -R FAudio "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/
+cd "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/FAudio
+chmod a+x wine_setup_native && ./wine_setup_native
 
 #cd "$EXEPREFIX"Tools/
 
 echo "Copying state cache to steam shadercache directory."
 
-cp Warframe.dxvk-cache "$(echo "${PWD:0:-21}"shadercache/230410/DXVK_state_cache/)"
+cp Warframe.x64.dxvk-cache "$(echo "${PWD:0:-21}"shadercache/230410/DXVK_state_cache/)"
 
 echo "Finished prefix preparation!"
 
