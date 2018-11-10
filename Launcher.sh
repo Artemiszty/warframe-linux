@@ -188,7 +188,7 @@ cp -R FAudio "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/
 cd "$STEAM_COMPAT_DATA_PATH"/pfx/drive_c/FAudio
 chmod a+x wine_setup_native && ./wine_setup_native
 
-#cd "$EXEPREFIX"Tools/
+cd "$EXEPREFIX"Tools/
 
 echo "Copying state cache to steam shadercache directory."
 
