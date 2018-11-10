@@ -6,6 +6,7 @@ USE ANY OTHER MAJOR DISTRO. LITERALLY TAKE YOUR PICK. ANY UBUNTU VARIETY. ANY AR
 KNOWN BUGS:  
 
 -Loading screen buzz, occasional odd-sounding effects: FAudio is being used to replace DirectX's XAudio implementation. FAudio is very new, and still has some bugs, however this is currently the only way to play the game as 64 bit XAudio crashes the game.  
+Try setting audio devices to PulseAudio in the in-game Audio settings.
 
 -Reverb crashes some missions: Turn reverb off in audio settings, it is not fully implemented  
 
