@@ -65,7 +65,7 @@ echo "*************************************************"
 echo "Copying warframe files."
 echo "*************************************************"
 
-cp -R updater.sh README.md dxvk-patched FAudio-wma Warframe.dxvk-cache "$WFDIR"
+cp -R updater.sh README.md dxvk-patched FAudio-wma Warframe.x64.dxvk-cache "$WFDIR"
 
 pushd "$WFDIR"
 
@@ -106,12 +106,6 @@ cd ..
 cd FAudio
 chmod a+x wine_setup_native && ./wine_setup_native
 cd ../../
-
-echo "*************************************************"
-echo "Installing DXVK-Cache."
-echo "*************************************************"
-mkdir -p "$WFDIR"/Downloaded/Public
-cp Warframe.dxvk-cache "$WFDIR"/Downloaded/Public/
 
 echo "*************************************************"
 echo "Creating warframe shell script"
