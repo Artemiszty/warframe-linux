@@ -3,6 +3,14 @@ USE ANY OTHER MAJOR DISTRO. LITERALLY TAKE YOUR PICK. ANY UBUNTU VARIETY. ANY AR
 
 [HOW TO REPORT AN ISSUE](https://gitlab.com/GloriousEggroll/warframe-linux/wikis/how-to-report-an-issue)
 
+KNOWN BUGS:  
+
+-Loading screen buzz, occasional odd-sounding effects: FAudio is being used to replace DirectX's XAudio implementation. FAudio is very new, and still has some bugs, however this is currently the only way to play the game as 64 bit XAudio crashes the game.  
+
+-Reverb crashes some missions: Turn reverb off in audio settings, it is not fully implemented  
+
+-Occasional buzzing/cracking: The game seems to have an issue with FAudio currently when losing/regaining window focus, this is the same issue as the loading screen buzz, as it has to do with memory not being initialized before trying to play sound. Turning on the option in game to mute when running in background helps.  
+
 
 ## IMPORTANT:
 -You MUST run the game from steam's "Play" button. You CANNOT run the script by itself. Steam passes environment variables to the script that it needs.  
