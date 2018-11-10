@@ -51,7 +51,7 @@ echo "*************************************************"
 echo "Copying warframe files."
 echo "*************************************************"
 
-cp -R updater.sh README.md dxvk-patched FAudio-wma Warframe.x64.dxvk-cache "$WFDIR"
+cp -R updater.sh README.md dxvk-patched FAudio Warframe.x64.dxvk-cache "$WFDIR"
 
 pushd "$WFDIR"
 
@@ -69,16 +69,6 @@ EOF
 chmod a+x updater.sh
 chmod a+x uninstall.sh
 
-
-echo "*************************************************"
-echo "Installing Direct X."
-echo "*************************************************"
-curl -A Mozilla/5.0 https://download.microsoft.com/download/8/4/A/84A35BF1-DAFE-4AE8-82AF-AD2AE20B6B14/directx_Jun2010_redist.exe -o directx_Jun2010_redist.exe
-$WINE directx_Jun2010_redist.exe /Q /T:C:\dx9
-$WINE dx9/dx9/DXSETUP.EXE /silent
-rm -R dx9
-
-
 echo "*************************************************"
 echo "Installing async-patched DXVK."
 echo "*************************************************"
@@ -91,7 +81,7 @@ cd ..
 #echo "*************************************************"
 cd FAudio
 chmod a+x wine_setup_native && ./wine_setup_native
-cd ../../
+cd ..
 
 echo "*************************************************"
 echo "Creating warframe shell script"
