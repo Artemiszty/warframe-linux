@@ -11,6 +11,13 @@ KNOWN BUGS:
 
 -Occasional buzzing/cracking: The game seems to have an issue with FAudio currently when losing/regaining window focus, this is the same issue as the loading screen buzz, as it has to do with memory not being initialized before trying to play sound. Turning on the option in game to mute when running in background helps.  
 
+-Game crashes after a few minutes even with no interaction:  
+
+Make sure either a controller is plugged in, or you have xboxdrv running before running steam. Also make sure the controller is detected in steam by doing the following:  
+
+Open Steam>settings>Controller>General Controller Configuration.  
+Check the boxes needed for your controller and make sure your controller is listed under Detected Controllers. Only check the boxes you need, not all of them.  
+For xboxdrv the controller will be listed as Unregistered: Xbox 360 Controller.  
 
 ## IMPORTANT:
 -You MUST run the game from steam's "Play" button. You CANNOT run the script by itself. Steam passes environment variables to the script that it needs.  
@@ -57,16 +64,4 @@ https://github.com/jomihaka/dxvk-poe-hack. The dxvk.conf toggles what the patch 
 
 Try adding --firstrun to the launch options, then run it again in steam. If this is successful you can remove --firstrun afterwards.  
 If not, add --debug to the launch options and report the error.  
-
--XAudio2 not found:  
-
-FAudio probably didn't symlink correctly. Open Tools/FAudio-wma/build_win64, then run ./wine_setup_native. Repeat the same for the build_win32 folder.  
-
--Game crashes after a few minutes:  
-
-Make sure either a controller is plugged in, or you have xboxdrv running before running steam. Also make sure the controller is detected in steam by doing the following:  
-
-Open Steam>settings>Controller>General Controller Configuration.  
-Check the boxes needed for your controller and make sure your controller is listed under Detected Controllers. Only check the boxes you need, not all of them.  
-For xboxdrv the controller will be listed as Unregistered: Xbox 360 Controller.  
 
