@@ -29,6 +29,7 @@ export EXEPREFIX=$(echo "${PWD:0:-14}"Warframe/)
 export PROTONDIR=$(echo ${PATH%%:*})
 export PROTON=$(echo "${PROTONDIR:0:-9}"proton)
 export DXVK_ASYNC=1
+export SDL_AUDIODRIVER=directsound
 
 export __GL_THREADED_OPTIMIZATIONS=1
 export MESA_GLTHREAD=TRUE
