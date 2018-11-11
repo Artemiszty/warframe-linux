@@ -192,7 +192,9 @@ chmod a+x wine_setup_native && ./wine_setup_native
 cd "$EXEPREFIX"Tools/
 
 echo "Copying state cache to steam shadercache directory."
-
+    if [ ! -d "$(echo "${PWD:0:-21}"shadercache/230410/DXVK_state_cache/)" ]; then
+        mkdir -p "$(echo "${PWD:0:-21}"shadercache/230410/DXVK_state_cache/)"
+    fi
 cp Warframe.x64.dxvk-cache "$(echo "${PWD:0:-21}"shadercache/230410/DXVK_state_cache/)"
 
 echo "Finished prefix preparation!"
